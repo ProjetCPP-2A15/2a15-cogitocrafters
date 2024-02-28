@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/artist.png</file>
+        <file>images/association.png</file>
+        <file>images/events.png</file>
+        <file>images/guests.png</file>
+        <file>images/logo app.png</file>
+        <file>images/products.png</file>
+        <file>images/setting.png</file>
+        <file>images/absentbg.png</file>
+        <file>images/attendancebg.png</file>
+        <file>images/empcardbg.png</file>
+        <file>images/back.png</file>
+    </qresource>
+</RCC>

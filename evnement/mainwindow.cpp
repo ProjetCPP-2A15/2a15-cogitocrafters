@@ -327,11 +327,11 @@ void MainWindow::on_supprimer_18_clicked()
 
     painter.end();
 }
-/*
+
 void MainWindow::on_supprimer_34_clicked()
-{
-    ui->stackedWidgetGuest->setCurrentIndex(4);
-}*/
+{/*
+    ui->stackedWidgetGuest->setCurrentIndex(4);*/
+}
 
 /*
 ********************************************************************

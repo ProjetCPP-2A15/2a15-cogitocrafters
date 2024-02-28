@@ -1,0 +1,91 @@
+#ifndef GUEST_H
+#define GUEST_H
+
+#include<QSqlQuery>
+#include<QSqlQueryModel>
+#include <QString>
+#include<QSqlTableModel>
+#include<QMessageBox>
+#include"connection.h"
+
+
+class Guest {
+private:
+    int CIN;
+    QString name;
+    int age;
+    QString gender;
+    QString address;
+    int phone;
+    QString email;
+
+public:
+    // Constructeur avec initialisation des attributs
+    Guest(){}
+    Guest(int ,QString , int , QString , QString , int , QString );
+
+    // Méthodes pour accéder aux attributs
+    QString getName() const {
+        return name;
+    }
+
+    int getAge() const {
+        return age;
+    }
+
+    QString getGender() const {
+        return gender;
+    }
+
+    QString getAddress() const {
+        return address;
+    }
+
+    int getPhone() const {
+        return phone;
+    }
+
+    QString getEmail() const {
+        return email;
+    }
+
+    // Setters pour modifier les attributs
+    void setName(const QString& n) {
+        name = n;
+    }
+
+    void setAge(int a) {
+        age = a;
+    }
+
+    void setGender(const QString& g) {
+        gender = g;
+    }
+
+    void setAddress(const QString& adr) {
+        address = adr;
+    }
+
+    void setPhone(int ph) {
+        phone = ph;
+    }
+
+    void setEmail(const QString& e) {
+        email = e;
+    }
+
+    bool ajouter();
+    QSqlQueryModel *afficher();
+    bool supprimer(int cin);
+    bool modifier(int ,int ,QString ,int ,QString ,QString ,QString ,int);
+    QSqlQueryModel* rechercher(QString );
+    QSqlQueryModel* afficher_tri(const QString &critere);
+
+
+
+
+
+};
+
+
+#endif // GUEST_H

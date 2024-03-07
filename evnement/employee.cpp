@@ -248,9 +248,14 @@ bool employee::login(QString mail, QString password)
 {
     // Prepare the query to check the login credentials
     QSqlQuery query;
-    query.prepare("SELECT mail FROM employee WHERE mail = :mail AND password = :password");
+    query.prepare("SELECT * FROM employee WHERE mail = :mail AND password = :password");
     query.bindValue(":mail", mail);
     query.bindValue(":password", password);
-    return query.exec();
+    if (query.exec()) {
+        // If the query returns a single row, the email and password are for the same employee
+        if (query.next()) {
+            return true;
+        }
+    }
+    return false;
 }
-

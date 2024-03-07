@@ -552,11 +552,11 @@ void MainWindow::on_save_2_clicked()
        /* if (!cinRegex.exactMatch(ui->lineEdit_IdEmployee->text())) {
                QMessageBox::critical(this, "Erreur", "Veuillez saisir un CIN valide (8 chiffres).");
                return;
-           }
-        if (!cinRegex.exactMatch(ui->lineEdit_PhoneNumberEmployee->text())) {
+           }*/
+        if (!cinRegex.exactMatch(ui->lineEdit_UpDatePhoneNumberEmployee->text())) {
                QMessageBox::critical(this, "Erreur", "Veuillez saisir un phoneNumber valide (8 chiffres).");
                return;
-           }*/
+           }
     employee e(id,name,lastname,address,sex,mail,function,password,dateBirth,phoneNumber);
     bool test=e.modifierEmployee();
     if(test){
@@ -730,19 +730,20 @@ void MainWindow::on_pushButtonLogin_clicked()
     QString password=ui->lineEdit_LoginPassword->text();
     bool test=emp.login(mail,password);
     if(test){
+        ui->tabEmployee->setModel(emp.afficherEmployee());
         QMessageBox::information(nullptr, QObject::tr("OK"),QObject::tr("login effectuée\n"
                                                                         "Clicke Cancel to exite"),QMessageBox::Cancel);
 
         ui->stackedWidgetGlobal->setCurrentIndex(0);
-        ui->stackedWidget->setCurrentIndex(0);
+        ui->stackedWidget->setCurrentIndex(3);
         ui->stackedWidgetEvent->setCurrentIndex(2);
-        ui->tabEmployee->setModel(emp.afficherEmployee());
 
     }else{ QMessageBox::critical(nullptr , QObject::tr("Not Ok "),QObject::tr("login échouée.\n"
                                                                               "Click Cancel to exit."),
                                  QMessageBox::Cancel);
 
-    }    ui->tabEmployee->setModel(emp.afficherEmployee());
+    }
+    ui->tabEmployee->setModel(emp.afficherEmployee());
 
 
 }
@@ -757,12 +758,12 @@ void MainWindow::on_checkBox_stateChanged()
 
         ui->lineEdit_UpDatePasswordEmployee->setText(e1.getPassword());
 
-
     }
     else
     {
-        QString encryptedPassword = QString(e1.getPassword().length(), '*');
+         QString encryptedPassword = QString(e1.getPassword().length(), '*');
          ui->lineEdit_AffPassword->setText(encryptedPassword);
-         ui->lineEdit_UpDatePasswordEmployee->setText(encryptedPassword);    }
+         ui->lineEdit_UpDatePasswordEmployee->setText(encryptedPassword);
+    }
 
 }

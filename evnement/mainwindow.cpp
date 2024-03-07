@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
     ui->setupUi(this);
     ui->tableView_14->setModel(e.afficherEvenement());
+    connect(ui->searchevent, &QLineEdit::textEdited, this, &MainWindow::on_searchevent_textEdited);
+    ui->tableView_14->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView_14->setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 MainWindow::~MainWindow()
 {
@@ -61,49 +64,8 @@ void MainWindow::on_pushButtonGuest_clicked()
     deselectButton(ui->pushButtonSetting);
     //ui->tableView->setModel(g.afficher());
 }
-/*
-void MainWindow::on_pushButton_15_clicked()
-{
-    int cin = ui->empCin_addGuest->text().toInt();
-    QString name = ui->empName_addGuest->text();
-    int age = ui->empAge_addGuest->text().toInt();
-    QString gender = ui->empGender_addGuest->text();
-    QString address = ui->empAdress_addGuest->text();
-    QString email = ui->empEmail_addGuest->text();
-    int phone = ui->empPhone_addGuest->text().toInt();
 
-    Guest g(cin, name, age, gender, address, phone, email);
-
-    bool test = g.ajouter();
-    if (test)
-    {
-
-        // Efface les champs de saisie après l'ajout réussi
-        ui->empCin_addGuest->clear();
-        ui->empName_addGuest->clear();
-        ui->empAge_addGuest->clear();
-        ui->empGender_addGuest->clear();
-        ui->empAdress_addGuest->clear();
-        ui->empEmail_addGuest->clear();
-        ui->empPhone_addGuest->clear(); // Réinitialise la sélection du sexe
-
-        ui->stackedWidgetGuest->setCurrentIndex(0);
-        ui->tableView->setModel(g.afficher());
-        QMessageBox::information(nullptr, QObject::tr("database is open"),
-                                 QObject::tr("connection successful.\n"
-                                             "Click Cancel to exit."), QMessageBox::Cancel);
-    }
-    else
-    {
-        QMessageBox::critical(nullptr, QObject::tr("database is not open"),
-                              QObject::tr("connection failed.\n"
-                                          "Click Cancel to exit."), QMessageBox::Cancel);
-    }
-}*/
-
-
-
-//                                            Partie Artist
+ //                                         Partie Artist
 void MainWindow::on_pushButtonArtist_clicked()
 {
     ui->stackedWidget->setCurrentIndex(2);
@@ -226,46 +188,47 @@ void MainWindow::on_add_event_clicked()
     QTime end_h = ui->end_h->time();
     float price_tick = ui->price_tick->value();
     if (event_noun.isEmpty() || location.isEmpty() || description.isEmpty() || start_d.isNull() || end_d.isNull() || start_h.isNull() || end_h.isNull()||nb_employee == 0 || price_tick == 0.0)
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Erreur"),
-                                  QObject::tr(" All fields are required."),
-                                  QMessageBox::Cancel);
-            return;
-        }
-    if (start_d < QDate::currentDate()) {
-        QMessageBox::critical(nullptr, QObject::tr("Error"),
-                              QObject::tr("Start date must be from %1 onwards.").arg(QDate::currentDate().toString("MM/dd/yyyy")),
-                              QMessageBox::Cancel);
-        return;
-    }
+           {
+               QMessageBox::critical(nullptr, QObject::tr("Erreur"),
+                                     QObject::tr(" All fields are required."),
+                                     QMessageBox::Cancel);
+               return;
+           }
+       if (start_d < QDate::currentDate()) {
+           QMessageBox::critical(nullptr, QObject::tr("Error"),
+                                 QObject::tr("Start date must be from %1 onwards.").arg(QDate::currentDate().toString("MM/dd/yyyy")),
+                                 QMessageBox::Cancel);
+           return;
+       }
 
 
-        if (end_d <= start_d) {
-            QMessageBox::critical(nullptr, QObject::tr("Erreur"),
-                                  QObject::tr("End date must be after the start date."),
-                                  QMessageBox::Cancel);
-            return;
-        }
-        if (start_h < QTime(7, 0) || start_h > QTime(20, 0)) {
-                QMessageBox::critical(nullptr, QObject::tr("Erreur"),
-                                      QObject::tr("Start time must be between 7AM and 8PM."),
-                                      QMessageBox::Cancel);
-                return;
-            }
+           if (end_d <= start_d) {
+               QMessageBox::critical(nullptr, QObject::tr("Erreur"),
+                                     QObject::tr("End date must be after the start date."),
+                                     QMessageBox::Cancel);
+               return;
+           }
+          /* if (start_h < QTime(7, 0) || start_h > QTime(20, 0)) {
+                   QMessageBox::critical(nullptr, QObject::tr("Erreur"),
+                                         QObject::tr("Start time must be between 7AM and 8PM."),
+                                         QMessageBox::Cancel);
+                   return;
+               }*/
 
-            if (end_h < QTime(7, 0) || end_h > QTime(20, 0)) {
-                QMessageBox::critical(nullptr, QObject::tr("Erreur"),
-                                      QObject::tr("End time must be between 7AM and 8PM."),
-                                      QMessageBox::Cancel);
-                return;
-            }
+               /*if (end_h < QTime(7, 0) || end_h > QTime(20, 0)) {
+                   QMessageBox::critical(nullptr, QObject::tr("Erreur"),
+                                         QObject::tr("End time must be between 7AM and 8PM."),
+                                         QMessageBox::Cancel);
+                   return;
+               }
+*/
+               if (end_h <= start_h) {
+                   QMessageBox::critical(nullptr, QObject::tr("Erreur"),
+                                         QObject::tr("End time must be after the start time."),
+                                         QMessageBox::Cancel);
+                   return;
+               }
 
-            if (end_h <= start_h) {
-                QMessageBox::critical(nullptr, QObject::tr("Erreur"),
-                                      QObject::tr("End time must be after the start time."),
-                                      QMessageBox::Cancel);
-                return;
-            }
     evenement e(id_event, nb_employee, event_noun, location, description, start_d, end_d, start_h, end_h, price_tick);
     bool test = e.ajouterEvenement();
     if (test)
@@ -296,6 +259,7 @@ void MainWindow::on_add_event_clicked()
                               QObject::tr("The event could not be added.\n"
                                           "Click Cancel to exit."), QMessageBox::Cancel);
     }
+    clearEventFields();
 }
 void MainWindow::on_tableView_14_clicked(const QModelIndex &index)
 {
@@ -382,8 +346,8 @@ void MainWindow::on_updateEvent_clicked()
     QDate start_d=QDate::fromString(ui->sdt->text(), "dd/MM/yyyy");
     //QDate end_d = ui->edt->date();
     QDate end_d=QDate::fromString(ui->edt->text(), "dd/MM/yyyy");
-    QTime start_h = ui->sht->time();
-    QTime end_h = ui->eht->time();
+    QString start_h = ui->sht->text();
+    QString end_h = ui->eht->text();
     float price_tick = ui->pricet->text().toInt();
 
     // Mettre à jour les champs de l'écran de mise à jour d'un événement avec les valeurs récupérées
@@ -394,8 +358,8 @@ void MainWindow::on_updateEvent_clicked()
     ui->descriptionup->setPlainText(description);
     ui->sdup->setDate(start_d);
     ui->edup->setDate(end_d);
-    ui->shup->setTime(start_h);
-    ui->ehup->setTime(end_h);
+    ui->shup->setTime(QTime::fromString(start_h, "hh:mm"));
+    ui->ehup->setTime(QTime::fromString(end_h, "hh:mm"));
     ui->priceup->setValue(price_tick);
 
     // Passer à l'écran de mise à jour d'un événement
@@ -403,25 +367,17 @@ void MainWindow::on_updateEvent_clicked()
 }
 void MainWindow::on_saveup_clicked()
 {
-    int id_event=ui->idup->text().toUInt();
-    int nb_employee = ui->eventnounup->text().toInt();
-    QString event_noun = ui->nount->text();
+    // Extracting data from UI elements
+    int id_event = ui->idup->text().toInt();
+    int nb_employee = ui->nbempup->text().toInt();
+    QString event_noun = ui->eventnounup->text();
     QString location = ui->locationup->text();
     QString description = ui->descriptionup->toPlainText();
-    //QDate start_d = ui->sdt->date();
-    QDate start_d=QDate::fromString(ui->sdup->text(), "dd/MM/yyyy");
-    //QDate end_d = ui->edt->date();
-    QDate end_d=QDate::fromString(ui->edup->text(), "dd/MM/yyyy");
-    QTime start_h = ui->shup->time();
-    QTime end_h = ui->ehup->time();
-    float price_tick = ui->priceup->text().toInt();
-    /*if (event_noun.isEmpty() || location.isEmpty() || description.isEmpty() || start_d.isNull() || end_d.isNull() || start_h.isNull() || end_h.isNull()||nb_employee == 0 || price_tick == 0.0)
-        {
-            QMessageBox::critical(nullptr, QObject::tr("Erreur"),
-                                  QObject::tr(" All fields are required."),
-                                  QMessageBox::Cancel);
-            return;
-        }*/
+    QDate start_d = QDate::fromString(ui->sdup->text(), "dd/MM/yyyy");
+    QDate end_d = QDate::fromString(ui->edup->text(), "dd/MM/yyyy");
+    QTime start_h = QTime::fromString(ui->shup->text(), "hh:mm");
+    QTime end_h = QTime::fromString(ui->ehup->text(), "hh:mm");
+    float price_tick = ui->priceup->text().toFloat();
     if (start_d < QDate::currentDate()) {
         QMessageBox::critical(nullptr, QObject::tr("Error"),
                               QObject::tr("Start date must be from %1 onwards.").arg(QDate::currentDate().toString("MM/dd/yyyy")),
@@ -436,42 +392,47 @@ void MainWindow::on_saveup_clicked()
                                   QMessageBox::Cancel);
             return;
         }
-        if (start_h < QTime(7, 0) || start_h > QTime(20, 0)) {
+        /*if (start_h < QTime(7, 0) || start_h > QTime(20, 0)) {
                 QMessageBox::critical(nullptr, QObject::tr("Erreur"),
                                       QObject::tr("Start time must be between 7AM and 8PM."),
                                       QMessageBox::Cancel);
                 return;
-            }
+            }*/
 
-            if (end_h < QTime(7, 0) || end_h > QTime(20, 0)) {
+            /*if (end_h < QTime(7, 0) || end_h > QTime(20, 0)) {
                 QMessageBox::critical(nullptr, QObject::tr("Erreur"),
                                       QObject::tr("End time must be between 7AM and 8PM."),
                                       QMessageBox::Cancel);
                 return;
             }
-
+*/
             if (end_h <= start_h) {
                 QMessageBox::critical(nullptr, QObject::tr("Erreur"),
                                       QObject::tr("End time must be after the start time."),
                                       QMessageBox::Cancel);
                 return;
             }
+
+    // Creating evenement object and updating the event in the database
     evenement e(id_event, nb_employee, event_noun, location, description, start_d, end_d, start_h, end_h, price_tick);
     bool test = e.modifierEvenement();
-    if (test)
-    {
-        QMessageBox::information(nullptr, QObject::tr("OK"),QObject::tr("updated successfully\n"
-                                                                                "Clicke Cancel to exite"),QMessageBox::Cancel);
-
-                ui->tableView_14->setModel(e.afficherEvenement());
 
 
-            }else{ QMessageBox::critical(nullptr , QObject::tr("Not Ok "),QObject::tr("Modification failed.\n"
-                                                                                      "Click Cancel to exit."),
-                                         QMessageBox::Cancel);
+    if (test) {
+        QMessageBox::information(nullptr, QObject::tr("OK"),
+                                 QObject::tr("Updated successfully.\nClick Cancel to exit."),
+                                 QMessageBox::Cancel);
+        ui->tableView_14->setModel(e.afficherEvenement());
+    } else {
+        QMessageBox::critical(nullptr, QObject::tr("Not OK"),
+                              QObject::tr("Modification failed.\nClick Cancel to exit."),
+                              QMessageBox::Cancel);
     }
-     ui->stackedWidgetEvent->setCurrentIndex(2);
+
+    // Changing the current index of stacked widget
+    ui->stackedWidgetEvent->setCurrentIndex(2);
 }
+
 void MainWindow::on_clear_clicked()
 {
     clearEventFields();
@@ -592,11 +553,11 @@ void MainWindow::on_save_6_clicked()
 void MainWindow::on_comboBox_2_activated(const QString &arg1)
 {
     QSqlQueryModel* model = e.afficher_tri(arg1);
-         if(arg1 == "ID"|| arg1 == "Event Noun"|| arg1 == "Date") ui->tableView->setModel(model);
+         if(arg1 == "ID"|| arg1 == "Event Noun"|| arg1 == "Date") ui->tableView_14->setModel(model);
 }
 void MainWindow::on_pdfevent_clicked()
-{/*
-    QString fileName = QFileDialog::getSaveFileName(nullptr, "Save PDF", ui->label_affCIN->text(), "*.pdf");
+{
+    QString fileName = QFileDialog::getSaveFileName(nullptr, "Save PDF", ui->idt->text(), "*.pdf");
 
     QPrinter printer(QPrinter::PrinterResolution);
     printer.setOutputFormat(QPrinter::PdfFormat);
@@ -620,20 +581,48 @@ void MainWindow::on_pdfevent_clicked()
     painter.drawText(100, 100, "Guest information");
 
     QStringList additionalInfo;
-    additionalInfo << "CIN : " + ui->label_affCIN->text();
-    additionalInfo << "Full Name : " + ui->label_affName->text();
-    additionalInfo << "Age : " + ui->label_affAge->text();
-    additionalInfo << "Gender : " + ui->label_affGender->text();
-    additionalInfo << "Address : " + ui->label_affAddress->text();
-    additionalInfo << "Phone Number : " + ui->label_affPhone->text();
-    additionalInfo << "Email : " + ui->label_affEmail->text();
-
-
+    additionalInfo << "ID : " + ui->idt->text();
+    additionalInfo << "Name Event : " + ui->nount->text();
+    additionalInfo << "Location : " + ui->locationt->text();
+    additionalInfo << "Description : " + ui->descriptiont->text();
+    additionalInfo << "Start Hour : " + ui->sht->text();
+    additionalInfo << "End Hour : " + ui->eht->text();
+    additionalInfo << "Start Date: " + ui->sdt->text();
+    additionalInfo << "End Date: " +  ui->edt->text();
+    additionalInfo << "Employees number : " + ui->nbt->text();
+    additionalInfo << "Price ticket : " + ui->pricet->text();
     int yOffset = 120;
     foreach(const QString &info, additionalInfo) {
         painter.drawText(120, yOffset, info);
         yOffset += 20;
     }
 
-    painter.end();*/
+    painter.end();
+}
+
+void MainWindow::on_searchevent_textEdited(const QString &arg1)
+{
+    QSqlQueryModel* model = e.rechercher(arg1);
+       ui->tableView_14->setModel(model);
+}
+
+
+
+void MainWindow::on_tout_supprimer_clicked() {
+    QModelIndexList selectedRows = ui->tableView_14->selectionModel()->selectedRows();
+    // Parcourez les indices des lignes sélectionnées et supprimez-les une par une
+    for (const QModelIndex &index : selectedRows) {
+        // Obtenez la valeur dans la deuxième colonne (colonnes sont 1-indexées)
+        QString valueToDelete = ui->tableView_14->model()->data(index.sibling(index.row(), 1)).toString();
+        // Utilisez cette valeur pour appeler votre fonction de suppression
+        e.supprimerEvenement(valueToDelete);
+    }
+    // Rafraîchissez le modèle de votre table view après la suppression
+    ui->tableView_14->setModel(e.afficherEvenement());
+}
+
+
+void MainWindow::on_ajouterArt_19_clicked()
+{
+    ui->stackedWidgetEvent->setCurrentIndex(2);
 }

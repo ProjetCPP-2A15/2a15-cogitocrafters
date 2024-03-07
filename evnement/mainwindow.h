@@ -79,6 +79,7 @@ private slots:
     void on_updateEvent_clicked();
     void on_saveup_clicked();
     void on_pdfevent_clicked();
+    void on_tout_supprimer_clicked();
 //
 
    void on_supprimer_event_clicked();
@@ -114,6 +115,10 @@ private slots:
     void on_tableView_14_clicked(const QModelIndex &index);
 
     void on_comboBox_2_activated(const QString &arg1);
+
+    void on_searchevent_textEdited(const QString &arg1);
+
+    void on_ajouterArt_19_clicked();
 
 private:
     Ui::MainWindow *ui;

@@ -49,6 +49,7 @@ public:
     bool supprimerEvenement(QString event_noun);
     bool modifierEvenement();
     QSqlQueryModel* afficher_tri(const QString &critere);
+    QSqlQueryModel* rechercher(QString G);
 };
 
 #endif // EVENEMENT_H

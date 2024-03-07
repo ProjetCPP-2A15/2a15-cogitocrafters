@@ -90,30 +90,21 @@ void evenement::setPriceTick(float price_tick)
 }
 evenement::evenement()
 {
-    id_event=0;
-    nb_employee=0;
-    event_noun="";
-    location="";
-    description="";
-    start_d=QDate();
-    end_d= QDate();
-    start_h=QTime();
-    end_h=QTime();
-    price_tick=0.0;
 }
-evenement::evenement(int id_event,int nb_employee,QString event_noun,QString location,QString description,QDate start_d,QDate end_d,QTime start_h,QTime  end_h,float price_tick)
+evenement::evenement(int id_event, int nb_employee, QString event_noun, QString location, QString description, QDate start_d, QDate end_d, QTime start_h, QTime end_h, float price_tick)
 {
-    this->id_event=id_event;
-    this->nb_employee=nb_employee;
-    this->event_noun=event_noun;
-    this->location=location;
-    this->description=description;
-    this->start_d=start_d;
-    this->end_d= end_d;
-    this->start_h=start_h;
-    this->end_h=end_h;
-    this-> price_tick= price_tick;
+    this->id_event = id_event;
+    this->nb_employee = nb_employee;
+    this->event_noun = event_noun;
+    this->location = location;
+    this->description = description;
+    this->start_d = start_d;
+    this->end_d = end_d;
+    this->start_h = start_h;
+    this->end_h = end_h;
+    this->price_tick = price_tick;
 }
+
 evenement evenement::chercher(int id_event)
 {
     evenement e;  // Create an instance of the Employee class
@@ -177,14 +168,12 @@ bool evenement::ajouterEvenement()
 QSqlQueryModel *evenement::afficherEvenement()
 {
     QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery("SELECT ID_EVENT, EVENT_NOUN, LOCATION, START_D, START_H, END_D, END_H, PRICE_TICK FROM EVENEMENT");
+    model->setQuery("SELECT ID_EVENT, EVENT_NOUN, LOCATION, CAST(START_D AS varchar(255)),  CAST(END_D AS varchar(255)), PRICE_TICK FROM EVENEMENT");
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID_EVENT"));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("EVENT_NOUN"));
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("LOCATION"));
     model->setHeaderData(3, Qt::Horizontal, QObject::tr("START_D"));
-    model->setHeaderData(4, Qt::Horizontal, QObject::tr("START_H"));
-    model->setHeaderData(5, Qt::Horizontal, QObject::tr("END_D"));
-    model->setHeaderData(6, Qt::Horizontal, QObject::tr("END_H"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("END_D"));
     model->setHeaderData(7, Qt::Horizontal, QObject::tr("PRICE_TICK"));
     return model;
 }
@@ -210,12 +199,18 @@ int evenement::generateNewID()
         return 1;
     }
 }
+
 bool evenement::modifierEvenement()
 {
     QSqlQuery query;
     query.prepare("UPDATE EVENEMENT SET nb_employee = :nb_employee, event_noun = :event_noun, location = :location, description = :description, start_d = :start_d, end_d = :end_d, start_h = :start_h, end_h = :end_h, price_tick = :price_tick WHERE id_event = :id_event");
+
+    // Convert numeric values to strings
+    QString nb = QString::number(nb_employee);
+    QString prx = QString::number(price_tick);
+
     query.bindValue(":id_event", id_event);
-    query.bindValue(":nb_employee", nb_employee);
+    query.bindValue(":nb_employee", nb);
     query.bindValue(":event_noun", event_noun);
     query.bindValue(":location", location);
     query.bindValue(":description", description);
@@ -223,28 +218,46 @@ bool evenement::modifierEvenement()
     query.bindValue(":end_d", end_d);
     query.bindValue(":start_h", start_h);
     query.bindValue(":end_h", end_h);
-    query.bindValue(":price_tick", price_tick);
+    query.bindValue(":price_tick", prx);
 
+    // Execute the query and return the result
     if (!query.exec()) {
-            qDebug() << "Erreur SQL:" << query.lastError().text(); // Utiliser qDebug() au lieu de QDebug()
-            return false;
-        }
-
-        return true; // Retourner true si l'ajout a réussi
+        qDebug() << "Erreur SQL:" << query.lastError().text();
+        return false;
+    }
+    return true;
 }
+
+
+
+
 QSqlQueryModel* evenement::afficher_tri(const QString &critere)
 {
     QSqlQueryModel* model = new QSqlQueryModel();
-    QString query = "SELECT * FROM GUEST ORDER BY ";
+    QString query = "SELECT * FROM EVENEMENT ORDER BY ";
 
     if(critere == "ID") {
-        query += "ID";
-    } else if(critere == "Event Noun") {
-        query += "Event Noun";
+        query += "ID_EVENT";
+    } else if(critere == "Noun Event") {
+        query += "EVENT_NOUN";
     } else if(critere == "Date") {
-        query += "Date";
+        query += "START_D";
     }
 
     model->setQuery(query);
+    return model;
+}
+QSqlQueryModel* evenement::rechercher(QString e)
+{
+    QSqlQueryModel* model = new QSqlQueryModel();
+    model->setQuery("SELECT ID_EVENT, EVENT_NOUN, LOCATION, START_D, START_H, END_D, END_H, PRICE_TICK FROM EVENEMENT WHERE EVENT_NOUN LIKE '%" + e + "%'");
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("ID_EVENT"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("EVENT_NOUN"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("LOCATION"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("START_D"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("START_H"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("END_D"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("END_H"));
+    model->setHeaderData(7, Qt::Horizontal, QObject::tr("PRICE_TICK"));
     return model;
 }

@@ -3,10 +3,13 @@
 #include <QString>
 #include<QDate>
 #include <QSqlQueryModel>
+#include<QByteArray>
+
 class employee
 {
 public:
     employee();
+    employee(int ,QString , QString ,QString ,QString,QString,QString ,QString ,QDate, int,QString ) ;
     employee(int ,QString , QString ,QString ,QString,QString,QString ,QString ,QDate, int ) ;
 
     int getId();
@@ -18,8 +21,10 @@ public:
     QString getMail(){return mail;}
     QString getFunction(){return function;}
     QString getPassword(){return password;}
-    //QString getProfil(){return profil;}
     int getPhoneNumber(){return phoneNumber;}
+    QString getImagePath(){return imagePath;}
+    QByteArray getImageData(){return imageData;}
+
 
     void setId(int);
     void setName(QString);
@@ -30,23 +35,29 @@ public:
     void setMail(QString);
     void setFunction(QString);
     void setPassword(QString);
-    //void setProfil(QString);
     void setPhoneNumber(int);
+    void setImagePath(QString);
+    void setImageData(QByteArray);
+
 
     bool ajouterEmployee();
     bool suprimerEmployee(int);
     QSqlQueryModel * afficherEmployee();
     bool modifierEmployee();
+    bool modifierImage(QString );
 
     employee chercher(int id_chercher);
     QSqlQueryModel* afficher_tri(const QString &critere) ;
     QSqlQueryModel* rechercher(QString e);
+    bool login(QString username, QString password);
+    QStringList getEncryptedPasswords();
 
 
 private:
   int id,phoneNumber;
-  QString name,lastname,address,sex,mail,function,password;
+  QString name,lastname,address,sex,mail,function,password,imagePath;
   QDate dateBirth;
-  QByteArray profil;
+  QByteArray imageData;
+
 };
 #endif // EMPLOYEE_H

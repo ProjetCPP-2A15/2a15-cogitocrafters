@@ -763,6 +763,7 @@ void MainWindow::on_checkBox_stateChanged()
     {
         QString encryptedPassword = QString(e1.getPassword().length(), '*');
          ui->lineEdit_AffPassword->setText(encryptedPassword);
-         ui->lineEdit_UpDatePasswordEmployee->setText(encryptedPassword);    }
+         ui->lineEdit_UpDatePasswordEmployee->setText(encryptedPassword);  
+    }
 
 }

@@ -116,6 +116,20 @@ private slots:
 
     void on_searchTextBox_employee_textEdited(const QString &arg1);
 
+    void on_pushButton_AddImageEmployee_clicked();
+
+    void on_pushButton_UpDateImageEmployee_clicked();
+
+    void on_listEmployee_2_clicked();
+
+    void on_listEmployeeAdd_clicked();
+
+    void on_supprimer_Employee_2_clicked();
+
+    void on_pushButtonLogin_clicked();
+
+    void on_checkBox_stateChanged();
+
 private:
     Ui::MainWindow *ui;
     employee emp;

@@ -5,6 +5,7 @@
 #include <QSqlQueryModel>
 #include <QSqlTableModel>
 #include <QSqlRecord>
+#include<QFile>
 #include <qsqlerror.h>
 employee::employee()
 {
@@ -19,8 +20,9 @@ employee::employee()
     password="";
     //profil="";
     phoneNumber=0;
+    imagePath="";
 }
-employee::employee(int id,QString name, QString lastname,QString address,QString sex,QString mail,QString function,QString password,QDate dateBirth,int phoneNumber)
+employee::employee(int id,QString name, QString lastname,QString address,QString sex,QString mail,QString function,QString password,QDate dateBirth,int phoneNumber,QString imagePath)
 {
     this->id=id;
     this->name=name;
@@ -33,7 +35,22 @@ employee::employee(int id,QString name, QString lastname,QString address,QString
     this->password=password;
     //this->profil=profil;
     this->phoneNumber=phoneNumber;
+    this->imagePath=imagePath;
 }
+employee::employee(int id,QString name, QString lastname,QString address,QString sex,QString mail,QString function,QString password,QDate dateBirth,int phoneNumber)
+{
+    this->id=id;
+    this->name=name;
+    this->lastname=lastname;
+    this->address=address;
+    this->sex=sex;
+    this->dateBirth=dateBirth;
+    this->mail=mail;
+    this->function=function;
+    this->password=password;
+    this->phoneNumber=phoneNumber;
+}
+
 void employee::setId(int id){this ->id=id;}
 void employee::setName(QString name){this->name=name;}
 void employee::setLastname(QString lastname){this->lastname=lastname;}
@@ -45,6 +62,8 @@ void employee::setFunction(QString function){this->function=function;}
 void employee::setPassword(QString password){this->password=password;}
 //void employee::setProfil(QString profil){this->profil=profil;}
 void employee::setPhoneNumber(int phoneNumber){this->phoneNumber=phoneNumber;}
+void employee::setImagePath(QString imagePath){this->imagePath=imagePath;}
+void employee::setImageData(QByteArray imageData){this->imageData=imageData;}
 
 
 
@@ -53,9 +72,16 @@ bool employee::ajouterEmployee()
     QSqlQuery query;
     QString id_string=QString::number(id);
     QString phoneNumber_string=QString::number(phoneNumber);
-
-    query.prepare("INSERT INTO employee (id, name ,lastname,address ,sex ,dateBirth ,mail,function,password,phoneNumber) "
-                        "VALUES (:id,:name ,:lastname,:address ,:sex ,:dateBirth ,:mail,:function,:password,:phoneNumber)");
+    QFile file(imagePath);
+        if (!file.open(QIODevice::ReadOnly)) {
+            qDebug() << "Erreur: Impossible de lire l'image:" << file.errorString();
+            qDebug() << imagePath;
+            return false;
+        }
+        QByteArray imageData = file.readAll();
+        file.close();
+    query.prepare("INSERT INTO employee (id, name ,lastname,address ,sex ,dateBirth ,mail,function,password,phoneNumber,image) "
+                        "VALUES (:id,:name ,:lastname,:address ,:sex ,:dateBirth ,:mail,:function,:password,:phoneNumber,:image)");
           query.bindValue(":id",id_string);
           query.bindValue(":name", name);
           query.bindValue(":lastname", lastname);
@@ -65,16 +91,16 @@ bool employee::ajouterEmployee()
           query.bindValue(":mail", mail);
           query.bindValue(":function", function);
           query.bindValue(":password", password);
-          //query.bindValue(":profil", profilByteArray);
-          //query.bindValue(":profil", profil);
           query.bindValue(":phoneNumber", phoneNumber_string);
+          query.bindValue(":image", imageData);
+
 
           return query.exec();
 }
 QSqlQueryModel * employee::afficherEmployee()
 {
     QSqlQueryModel* model=new  QSqlQueryModel();
-          model->setQuery("SELECT id,name,lastname,address,function,mail FROM employee");
+          model->setQuery("SELECT cast(id as varchar(255)),name,lastname,address,function,mail FROM employee");
           model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
           model->setHeaderData(1, Qt::Horizontal, QObject::tr("name"));
           model->setHeaderData(2, Qt::Horizontal, QObject::tr("lastname"));
@@ -108,6 +134,9 @@ employee employee::chercher(int id_chercher)
             employee.setFunction(query.value("function").toString());
             employee.setPassword(query.value("password").toString());
             employee.setPhoneNumber(query.value("phoneNumber").toInt());
+            employee.setImagePath(query.value("image").toString());  // Retrieve imagePath from the database
+            QByteArray imageData = query.value("image").toByteArray();
+            employee.setImageData(imageData);
         }
         else
         {
@@ -150,13 +179,47 @@ bool employee::modifierEmployee()
           query.bindValue(":phoneNumber", phoneNumber);
            return query.exec();
 }
+bool employee::modifierImage(QString imagePath)
+{
+    // Lire l'image depuis le fichier
+    QFile file(imagePath);
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << "Erreur: Impossible de lire l'image:" << file.errorString();
+        qDebug() << imagePath;
+        return false;
+    }
+    QByteArray image = file.readAll();
+    file.close();
+    QSqlQuery query;
+          query.prepare("UPDATE EMPLOYEE SET id=:id,name= :name, lastname= :lastname, address= :address, sex= :sex, mail= :mail,function= :function ,phoneNumber= :phoneNumber,password=:password,dateBirth=:dateBirth,IMAGE=:image where id =:id");
+          query.bindValue(":id",id);
+          query.bindValue(":name", name);
+          query.bindValue(":lastname", lastname);
+          query.bindValue(":address", address);
+          query.bindValue(":sex", sex);
+          query.bindValue(":dateBirth", dateBirth);
+          query.bindValue(":mail", mail);
+          query.bindValue(":function", function);
+          query.bindValue(":password", password);
+          //query.bindValue(":profil", profilByteArray);
+          //query.bindValue(":profil", profil);
+          query.bindValue(":phoneNumber", phoneNumber);
+          query.bindValue(":image", image);
+
+           return query.exec();
+}
+
+
+
+
+
 QSqlQueryModel * employee::afficher_tri(const QString &critere)
 {
     QSqlQueryModel* model = new QSqlQueryModel();
-    QString query = "SELECT * FROM EMPLOYEE ORDER BY ";
+    QString query = "SELECT cast(id as varchar(255)),name,lastname,address,function,mail FROM EMPLOYEE ORDER BY ";
 
     if(critere == "CIN") {
-        query += "id";
+        query += "cast(id as varchar(255))";
     } else if(critere == "Address") {
         query += "Address";
     } else if(critere == "Name") {
@@ -170,15 +233,24 @@ QSqlQueryModel* employee::rechercher(QString e)
 {
     QSqlQueryModel* model = new QSqlQueryModel();
 
-    model->setQuery("SELECT id,name,lastname,address,function,mail FROM employee WHERE NAME LIKE '%" + e + "%'");
+    model->setQuery("SELECT cast(id as varchar(255)),name,lastname,address,function,mail FROM employee WHERE NAME LIKE '%" + e + "%'");
 
     model->setHeaderData(0, Qt::Horizontal, QObject::tr("id"));
     model->setHeaderData(1, Qt::Horizontal, QObject::tr("name"));
     model->setHeaderData(2, Qt::Horizontal, QObject::tr("lastname"));
-    //model->setHeaderData(3, Qt::Horizontal, QObject::tr("phoneNumber"));
     model->setHeaderData(3, Qt::Horizontal, QObject::tr("address"));
     model->setHeaderData(4, Qt::Horizontal, QObject::tr("function"));
     model->setHeaderData(5, Qt::Horizontal, QObject::tr("mail"));
 
     return model;
 }
+bool employee::login(QString mail, QString password)
+{
+    // Prepare the query to check the login credentials
+    QSqlQuery query;
+    query.prepare("SELECT mail FROM employee WHERE mail = :mail AND password = :password");
+    query.bindValue(":mail", mail);
+    query.bindValue(":password", password);
+    return query.exec();
+}
+

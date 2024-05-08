@@ -33,5 +33,8 @@
         <file>images/vase.jpg</file>
         <file>images/cal.png</file>
         <file>images/backlogin.jpg</file>
+        <file>../../t.jpg</file>
+        <file>images/t.jpg</file>
+        <file>images/_fb5bedde-3add-47c4-9dff-20748af8bf89.jpg</file>
     </qresource>
 </RCC>

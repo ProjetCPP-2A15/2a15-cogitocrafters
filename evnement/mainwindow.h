@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include "artist.h"
+#include "article.h"
+#include "qrcode.h"
 #include "QSqlTableModel"
 #include <QtCharts/QLegend>
 #include <QtCharts>
@@ -17,6 +19,12 @@
 #include "QSqlRecord"
 #include <QThread>
 #include <QWidget>
+#include <QFileDialog>
+#include <QFile>
+#include "guest.h"
+
+
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -103,6 +111,11 @@ signals:
 };
 
 
+
+
+
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -112,6 +125,7 @@ public:
     ~MainWindow();
     void selectButton(QPushButton *button);
     void deselectButton(QPushButton *button);
+
 
 private slots:
     void on_pushButtonEvents_clicked();
@@ -199,6 +213,7 @@ private slots:
     //partie artist
     void on_ararriere_clicked();
     void on_ararriere_2_clicked();
+    void on_ararriere_7_clicked();
     void on_ararriere_3_clicked();
     void on_aradd_clicked();
     void on_arupdate_clicked();
@@ -235,7 +250,7 @@ private slots:
 
 
 
-    // Slot pour mettre à jour le champ nom_2 avec le texte reconnu
+    // Slot pour mettre à jour les champs avec le texte reconnu
     void updateNom(const QString &text);
     void updateCIN(const QString &text);
     void updatePrenom(const QString &text);
@@ -246,13 +261,110 @@ private slots:
     void updateAdresse(const QString &text);
     void updateDomaine(const QString &text);
 
-    void on_arcomboBox_activated(const QString &arg1);
+
+
+
+
+    //--------scann par camera ---
+    void on_scann_clicked();
+    void on_scann_2_clicked();
+    void on_scann_3_clicked();
+    void on_scann_4_clicked();
+    void on_scann_5_clicked();
+    void on_scann_6_clicked();
+    void on_scann_7_clicked();
+    void on_scann_8_clicked();
+
+    // ------- mail--------
+
+
+    void on_artableView_doubleClicked(const QModelIndex &index);
+
+    void on_arpdf_3_clicked();
+
+    void on_arpicture_clicked();
+
+    void on_arpicture_2_clicked();
+
+
+
+    void on_checkBox_stateChanged(int arg1);
+
+
+
+
+
+//------ TRIE------
+    void on_desc_1_clicked();
+    void on_asc_1_clicked();
+    void on_desc_2_clicked();
+    void on_asc_2_clicked();
+    void on_desc_3_clicked();
+    void on_asc_3_clicked();
+    void on_desc_4_clicked();
+    void on_asc_4_clicked();
+    void on_desc_5_clicked();
+    void on_asc_5_clicked();
+    void on_desc_6_clicked();
+    void on_asc_6_clicked();
+    void on_desc_7_clicked();
+    void on_asc_7_clicked();
+
+    void on_pushButton_14_clicked();
+
+    void on_tableView_17_doubleClicked(const QModelIndex &index);
+
+    void on_updateEmployee_5_clicked();
+
+    void on_tableView_6_doubleClicked(const QModelIndex &index);
+
+    void on_supprimer_31_clicked();
+
+    void on_searchTextBox_19_textChanged(const QString &arg1);
+
+    void on_del_all_clicked();
+
+    void on_suppgen_clicked();
+
+    void on_tableView_doubleClicked(const QModelIndex &index);
+
+    void on_supprimer_Guest_2_clicked();
+
+    void on_save_10_clicked();
+
+    void on_searchTextBox_17_textEdited(const QString &arg1);
+
+    void on_supprimer_18_clicked();
+
+    void on_supprimer_42_clicked();
+
+    void on_addImageGuest_clicked();
+
+    void on_updateImage_2_clicked();
+
+    void on_supprimer_GuestSelect_2_clicked();
+
+    void on_arsupp_2_clicked();
+
+    void on_arsexe_3_currentIndexChanged(int index);
+
+    void on_statEmployee_clicked();
+
+
+    //void on_arsexe_4_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;
     Artiste a;
+    Article article;
     QSqlTableModel *model;
     int cinn;
+    int idA;
+    QPixmap imagePixmap;
+    QString selectedImagePath; // Déclaration de selectedImagePath comme membre privé de la classe
+    Guest g;
+    QString imagePath2;
+    QString selectedImagePathu; // Définir une variable globale pour stocker le chemin de l'image sélectionnée update
 
     // Thread et travailleur de reconnaissance vocale
     QThread *thread;

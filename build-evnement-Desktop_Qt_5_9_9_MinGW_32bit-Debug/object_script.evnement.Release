@@ -1,0 +1,13 @@
+INPUT(
+./release\article.o
+./release\artist.o
+./release\connection.o
+./release\detecte.o
+./release\guest.o
+./release\main.o
+./release\mainwindow.o
+./release\qrcode.o
+./release\qrc_resources.o
+./release\moc_detecte.o
+./release\moc_mainwindow.o
+);

@@ -3,7 +3,7 @@
 Arduino::Arduino()
 {
     data="";
-    arduino_port_name="";
+    arduino_port_name="COM7";
     arduino_is_available=false;
     serial=new QSerialPort;
 }
@@ -31,7 +31,7 @@ int Arduino::connect_arduino()
         if(arduino_is_available){ // configuration de la communication ( débit...)
             serial->setPortName(arduino_port_name);
             if(serial->open(QSerialPort::ReadWrite)){
-                serial->setBaudRate(QSerialPort::Baud9600); // débit : 9600 bits/s
+                serial->setBaudRate(QSerialPort::Baud115200); // débit : 9600 bits/s
                 serial->setDataBits(QSerialPort::Data8); //Longueur des données : 8 bits,
                 serial->setParity(QSerialPort::NoParity); //1 bit de parité optionnel
                 serial->setStopBits(QSerialPort::OneStop); //Nombre de bits de stop : 1
@@ -59,18 +59,15 @@ int Arduino::close_arduino()
 
  QByteArray Arduino::read_from_arduino()
 {
-     if(serial->isReadable()){
-             data=serial->readLine(); //récupérer les données reçues
-             QString uid = QString::fromLatin1(data).trimmed(); // Convertit les données en QString
-             qDebug() << "UID de la carte RFID détectée:" << uid;
-             serial->blockSignals(true);
-             return data;
-        }
+    if(serial->isReadable()){
+         data=serial->readAll(); //récupérer les données reçues
+
+         return data;
+    }
  }
 
 
 int Arduino::write_to_arduino( QByteArray d)
-
 {
 
     if(serial->isWritable()){

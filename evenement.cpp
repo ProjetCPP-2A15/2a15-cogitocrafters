@@ -20,7 +20,6 @@
 #include<QLabel>
 #include "controller.h"
 #include"employee.h"
-
 int evenement::getIdEvent()const
 {
     return id_event ;
@@ -118,20 +117,6 @@ evenement::evenement(int id_event, int nb_employee, QString event_noun, QString 
     this->end_h = end_h;
     this->price_tick = price_tick;
 }
-evenement::evenement(int id_event, int nb_employee, QString event_noun, QString location, QString description, QDate start_d, QDate end_d, QTime start_h, QTime end_h, float price_tick,QString RFID)
-{
-    this->id_event = id_event;
-    this->nb_employee = nb_employee;
-    this->event_noun = event_noun;
-    this->location = location;
-    this->description = description;
-    this->start_d = start_d;
-    this->end_d = end_d;
-    this->start_h = start_h;
-    this->end_h = end_h;
-    this->price_tick = price_tick;
-    this->RFID=RFID;
-}
 evenement::evenement(int id_event, QString imagePath)
 {
     this->id_event = id_event;
@@ -175,19 +160,6 @@ evenement evenement::chercher(int id_event)
 
     return e;
 }
-void updateEventComboBox(QComboBox *comboBox) {
-    // Clear existing items in the ComboBox
-    comboBox->clear();
-
-    // Fetch IDs from the database
-    QSqlQuery query;
-    query.exec("SELECT id_event FROM evenement");
-    while (query.next()) {
-        int id = query.value(0).toInt();
-        // Add each ID to the ComboBox
-        comboBox->addItem(QString::number(id));
-    }
-}
 bool evenement::ajouterEvenement()
 {
     QSqlQuery query;
@@ -195,8 +167,8 @@ bool evenement::ajouterEvenement()
     id_event = generateNewID();
     QString nb=QString::number(nb_employee);
     QString prx=QString::number(price_tick);
-    query.prepare("INSERT INTO EVENEMENT (ID_EVENT, NB_EMPLOYEE ,EVENT_NOUN,LOCATION ,DESCRIPTION ,START_D ,END_D,START_H,END_H,PRICE_TICK,RFID) "
-                          "VALUES (:id_event,:nb_employee ,:event_noun,:location ,:description ,:start_d ,:end_d,:start_h,:end_h,:price_tick,:RFID)");
+    query.prepare("INSERT INTO EVENEMENT (ID_EVENT, NB_EMPLOYEE ,EVENT_NOUN,LOCATION ,DESCRIPTION ,START_D ,END_D,START_H,END_H,PRICE_TICK) "
+                          "VALUES (:id_event,:nb_employee ,:event_noun,:location ,:description ,:start_d ,:end_d,:start_h,:end_h,:price_tick)");
             //query.bindValue(":id_event",res);
             query.bindValue(":id_event", id_event);
             query.bindValue(":nb_employee", nb);
@@ -208,7 +180,6 @@ bool evenement::ajouterEvenement()
             query.bindValue(":start_h", start_h);
             query.bindValue(":end_h", end_h);
             query.bindValue(":price_tick", prx);
-            query.bindValue(":RFID", RFID);
 
             return query.exec();
 }
@@ -401,7 +372,7 @@ void evenement::afficherPieChart(QLabel *label)
     }
 
     // Création du pixmap pour dessiner le pie chart
-    QSize pixmapSize(581, 371);
+    QSize pixmapSize(511, 371);
     QPixmap pixmap(pixmapSize);
     pixmap.fill(Qt::transparent); // Fond transparent
 
@@ -469,44 +440,7 @@ bool evenement::ajouterImage(int id)
         return false;
     }
 }
-int evenement::rechercherRFID(QString rfid)
-{
-    QSqlQuery query;
-        query.prepare("SELECT COUNT(*) FROM evenement WHERE RFID = ?");
-        query.addBindValue(rfid);
-
-        if (query.exec() && query.next())
-        {
-            return query.value(0).toInt();
-        }
-        else
-        {
-            qDebug() << "Query failed:" << query.lastError().text();
-            return 0;
-        }
-}
 //*********************************************************************Mainwindow*******************************************************************//
-void MainWindow::on_pushButtonGuest_clicked()
-{
-
-    ui->StackedWidget->setCurrentIndex(2);
-    ui->stackedWidgetGuest->setCurrentIndex(0);
-    ui->tableViewGuest->setModel(g.afficher());
-    deselectButton(ui->pushButtonEvents);
-    deselectButton(ui->pushButtonProduct);
-    selectButton(ui->pushButtonGuest);
-    deselectButton(ui->pushButtonArtist);
-    deselectButton(ui->pushButtonAssociation);
-    //deselectButton(ui->pushButtonSetting);
-    ui->addCinGuest->clear();
-    ui->addNameGuest->clear();
-    ui->addAgeGuest->clear();
-    ui->addAddressGuest->clear();
-    ui->addEmailGuest->clear();
-    ui->addPhoneGuest->clear();
-    updateEventComboBox(ui->id_events);
-
-}
 void MainWindow::on_add_event_clicked()
 {
     int id_event =e.generateNewID();
@@ -548,23 +482,8 @@ void MainWindow::on_add_event_clicked()
                                             QMessageBox::Cancel);
                       return;
                   }
-                  // Vérifier si la période est unique
-                      QVector<evenement> events = getEventsFromDatabase();
-                      foreach(const evenement &event, events)
-                      {
-                          if ((start_d >= event.getStartD() && start_d <= event.getEndD()) ||
-                              (end_d >= event.getStartD() && end_d <= event.getEndD()) ||
-                              (event.getStartD() >= start_d && event.getStartD() <= end_d) ||
-                              (event.getEndD() >= start_d && event.getEndD() <= end_d))
-                          {
-                              QMessageBox::critical(nullptr, QObject::tr("Erreur"),
-                                                    QObject::tr("The chosen period overlaps with an existing event."),
-                                                    QMessageBox::Cancel);
-                              return;
-                          }
-                      }
 
-       evenement e(id_event, nb_employee, event_noun, location, description, start_d, end_d, start_h, end_h, price_tick,"23 CD E8 A6");
+       evenement e(id_event, nb_employee, event_noun, location, description, start_d, end_d, start_h, end_h, price_tick);
        bool test = e.ajouterEvenement();
        if (test)
        {
@@ -587,7 +506,6 @@ void MainWindow::on_add_event_clicked()
            QMessageBox::information(nullptr, QObject::tr("OK"),
                                     QObject::tr("the event has been added successfully.\n"
                                                 "Click Cancel to exit."), QMessageBox::Cancel);
-           updateEventComboBox(ui->id_events);
 
        }
        else
@@ -612,9 +530,6 @@ void MainWindow::on_table_event_clicked(const QModelIndex &index)
                ui->nount->setText(ev.getEventNoun());
                ui->idt->setText(QString::number(ev.getIdEvent()));
                ui->idEventParticiper->setText(QString::number(ev.getIdEvent()));
-               ui->eventnounparticiper->setText(ev.getEventNoun());
-               ui->startdateparticiper->setDate(ev.getStartD());
-               ui->enddateparticiper->setDate(ev.getEndD());
                ui->nbt->setText(QString::number(ev.getNbEmployee()));
                ui->pricet->setText(QString::number(ev.getPriceTick()));
                ui->sht->setTime(ev.getStartH());
@@ -849,44 +764,30 @@ void MainWindow::on_calendar_event_clicked()
 void MainWindow::on_calendarWidget_clicked(const QDate &date)
 {
     QVector<evenement> events = getEventsFromDatabase();
-    clearEventHighlights();
-
-    // Afficher la date sélectionnée
-    ui->datecal->setText(date.toString("d MMMM yyyy"));
-
-    // Recherche de l'événement correspondant à la date cliquée
-    foreach(const evenement &event, events)
-    {
-        if (date >= event.getStartD() && date <= event.getEndD())
+         clearEventHighlights();
+        foreach(const evenement &event, events)
         {
-            // Affichage des détails de l'événement
-            ui->namecal->setText(event.getEventNoun());
-            ui->locationcal->setText(event.getLocation());
-            ui->pricecal->setText(QString::number(event.getPriceTick()) + " DT");
-            ui->nbcal->setText(QString::number(event.getNbEmployee()) + " employee(s)");
-            ui->descriptioncal->setText(event.getDescription());
-            ui->starthcal->setText(event.getStartH().toString("hh:mm"));
-            ui->endhcal->setText(event.getEndH().toString("hh:mm"));
-
-            // Mise en surbrillance de la période de l'événement sur le calendrier
-            highlightEventPeriod(event.getStartD(), event.getEndD());
-
-            return;
+            if (event.getStartD() == date)
+            {
+                ui->namecal->setText(event.getEventNoun());
+                ui->locationcal->setText((event.getLocation()));
+                ui->pricecal->setText(QString::number(event.getPriceTick())+ QString(" DT"));
+                ui->nbcal->setText(QString::number(event.getNbEmployee())+ QString(" employee(s)"));
+                ui->descriptioncal->setText((event.getDescription()));
+                ui->datecal->setText(event.getStartD().toString("d MMMM yyyy"));
+                ui->starthcal->setText(event.getStartH().toString("hh:mm"));
+                ui->endhcal->setText(event.getEndH().toString("hh:mm"));
+                highlightEventPeriod(event.getStartD(), event.getEndD());
+                return;
+            }
         }
-    }
 
-    // Si aucun événement n'est trouvé pour la date cliquée, affichez un message
-    QMessageBox::information(this, "No events", "No events found for this date.");
+        QMessageBox::information(this, "Aucun événement", "Aucun événement trouvé pour cette date.");
 }
 
 void MainWindow::on_add_cal_clicked()
 {
     ui->stackedWidgetEvent->setCurrentIndex(3);
-}
-
-void MainWindow::on_add_cal_6_clicked()
-{
-     ui->stackedWidgetEvent->setCurrentIndex(2);
 }
 
 void MainWindow::on_supprimer_event_cal_clicked()
@@ -915,7 +816,7 @@ void MainWindow::on_generateAffiche_clicked()
     QString query = ui->descriptiont->text().trimmed();
     int id_event = ui->idt->text().toInt();
     executePythonScript(query);
-    evenement e(id_event,"C:/Users/meddh/Desktop/noblePalette/noblePalette/script/event/image.jpg");
+    evenement e(id_event,"C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\event\\image.jpg");
     e.ajouterImage(id_event);
     QString fileName = QFileDialog::getSaveFileName(nullptr, "Save PDF", ui->nount->text(),"*.pdf");
 
@@ -932,7 +833,7 @@ void MainWindow::on_generateAffiche_clicked()
     QPainter painter;
     painter.begin(&printer);
 
-       QPixmap image("C:/Users/meddh/Desktop/noblePalette/noblePalette/script/event/image.jpg");
+       QPixmap image("C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\event\\image.jpg");
 
        QSizeF paperSize = printer.pageRect(QPrinter::DevicePixel).size();
        QRectF targetRect(0, 0, paperSize.width(), paperSize.height());
@@ -941,7 +842,7 @@ void MainWindow::on_generateAffiche_clicked()
        painter.drawPixmap(targetRect, image, sourceRect);
 
        QString name = ui->nount->text();
-       QFont nameFont("Trajan Pro", 25, QFont::Bold);
+       QFont nameFont("Trajan Pro", 34, QFont::Bold);
 
            // Générer une couleur aléatoire pour le titre
            QStringList titleColors = {"#D4AF37", "#A40FAF", "#013081", "#F9D598"};
@@ -956,7 +857,7 @@ void MainWindow::on_generateAffiche_clicked()
            int maxWidth = 1400;
            QString elidedText = nameMetrics.elidedText(name, Qt::ElideRight, maxWidth);
            int textWidth = nameMetrics.width(elidedText);
-           int xName = 800 - textWidth / 2;
+           int xName = 700 - textWidth / 2;
            int yName = 1300;
            painter.drawText(xName, yName, elidedText);
 
@@ -1031,42 +932,42 @@ void MainWindow::on_generateAffiche_clicked()
        int iconSize = 150; // Taille de l'icône
 
        // Dessiner l'icône de localisation
-       QPixmap locationIcon("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/location.png");
+       QPixmap locationIcon("C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\location.png");
        QPixmap scaledLocationIcon = locationIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio);
        int xLocationIcon = 100; // Position horizontale pour l'icône de localisation
        int yLocationIcon = 4100; // Position verticale pour l'icône de localisation
        painter.drawPixmap(xLocationIcon, yLocationIcon, scaledLocationIcon); // Dessiner l'icône de localisation
 
        // Dessiner l'icône Facebook
-       QPixmap facebookIcon("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/facebook.png");
+       QPixmap facebookIcon("C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\facebook.png");
        QPixmap scaledFacebookIcon = facebookIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio);
        int xFacebookIcon = 100; // Position horizontale pour l'icône Facebook
        int yFacebookIcon = 100; // Position verticale pour l'icône Facebook
        painter.drawPixmap(xFacebookIcon, yFacebookIcon, scaledFacebookIcon); // Dessiner l'icône Facebook
 
        // Dessiner l'icône Instagram
-       QPixmap instagramIcon("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/instagram.png");
+       QPixmap instagramIcon("C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\instagram.png");
        QPixmap scaledInstagramIcon = instagramIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio);
        int xInstagramIcon = 300; // Position horizontale pour l'icône Instagram
        int yInstagramIcon = 100; // Position verticale pour l'icône Instagram
        painter.drawPixmap(xInstagramIcon, yInstagramIcon, scaledInstagramIcon); // Dessiner l'icône Instagram
 
        // Dessiner l'icône Twitter
-       QPixmap twitterIcon("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/twitter.png");
+       QPixmap twitterIcon("C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\twitter.png");
        QPixmap scaledTwitterIcon = twitterIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio);
        int xTwitterIcon = 500; // Position horizontale pour l'icône Twitter
        int yTwitterIcon = 100; // Position verticale pour l'icône Twitter
        painter.drawPixmap(xTwitterIcon, yTwitterIcon, scaledTwitterIcon); // Dessiner l'icône Twitter
 
        // Dessiner l'icône WhatsApp
-       QPixmap whatsappIcon("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/whatsapp.png");
+       QPixmap whatsappIcon("C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\whatsapp.png");
        QPixmap scaledWhatsappIcon = whatsappIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio);
        int xWhatsappIcon = 700; // Position horizontale pour l'icône WhatsApp
        int yWhatsappIcon = 100; // Position verticale pour l'icône WhatsApp
        painter.drawPixmap(xWhatsappIcon, yWhatsappIcon, scaledWhatsappIcon); // Dessiner l'icône WhatsApp
 
        // Dessiner l'icône ticket
-       QPixmap priceIcon("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/price.png");
+       QPixmap priceIcon("C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\price.png");
        QPixmap scaledpriceIcon = priceIcon.scaled(iconSize, iconSize, Qt::KeepAspectRatio);
        int xpriceIcon = 100; // Position horizontale pour l'icône WhatsApp
        int ypriceIcon = 4400; // Position verticale pour l'icône WhatsApp
@@ -1107,7 +1008,7 @@ void MainWindow::executePythonScript(const QString &query) {
     QProcess process;
 
     // Spécifier le chemin du script Python
-    QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/event/blabla.py";
+    QString scriptPath = "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\event\\blabla.py";
 
     // Démarrer le processus avec le script Python et la requête comme argument
     QStringList arguments;
@@ -1134,18 +1035,18 @@ QColor MainWindow::generateRandomColor()
     return QColor(red, green, blue);
 }
 QMap<QString, QString> weatherIconMap = {
-    {"clear sky", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/clear sky.png"},
-    {"few clouds", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/few clouds.png"},
-    {"scattered clouds", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/scattered clouds.png"},
-    {"broken clouds", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/broken clouds.png"},
-    {"shower rain", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/shower rain.png"},
-    {"rain", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/rain.png"},
-    {"thunderstorm", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/thunderstorm.png"},
-    {"snow", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/snow.png"},
-    {"mist", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/mist.png"},
-    {"light rain", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/light rain.png"},
-    {"overcast clouds", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/overcast clouds.png"},
-    {"moderate clouds", "C:/Users/meddh/Desktop/noblePalette/noblePalette/images/moderate clouds.png"}
+    {"clear sky", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\clear sky.png"},
+    {"few clouds", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\few clouds.png"},
+    {"scattered clouds", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\scattered clouds.png"},
+    {"broken clouds", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\broken clouds.png"},
+    {"shower rain", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\shower rain.png"},
+    {"rain", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\rain.png"},
+    {"thunderstorm", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\thunderstorm.png"},
+    {"snow", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\snow.png"},
+    {"mist", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\mist.png"},
+    {"light rain", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\light rain.png"},
+    {"overcast clouds", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\overcast clouds.png"},
+    {"moderate clouds", "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\moderate clouds.png"}
 
 };
 
@@ -1346,7 +1247,7 @@ void MainWindow::on_pdfevent_clicked()
         }
 
         // Charger et dessiner une image
-        QPixmap image("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/logo app.png"); // Assurez-vous de spécifier le bon chemin vers votre image
+        QPixmap image("C:/Users/Emna Nkhili/Desktop/evnement/evnement/images/logo app.png"); // Assurez-vous de spécifier le bon chemin vers votre image
         QSize imageSize = image.size();
         QSize targetSize(300, 300); // Taille cible minimisée de l'image
         QSize scaledSize = imageSize.scaled(targetSize, Qt::KeepAspectRatio);
@@ -1369,7 +1270,7 @@ void MainWindow::on_supprimer_event_clicked()
                                                                                 "Clicke Cancel to exite"),
                                          QMessageBox::Cancel);
                 ui->table_event->setModel(e.afficherEvenement());
-                updateEventComboBox(ui->id_events);
+                //ui->stackedWidgetSetting->setCurrentIndex(1);
 
             }
             else{ QMessageBox::critical(nullptr , QObject::tr("Not Ok "),QObject::tr(" not deleted successfully\n"
@@ -1380,25 +1281,6 @@ void MainWindow::on_supprimer_event_clicked()
 }
 
 void MainWindow::on_list_clicked()
-{
-    ui->stackedWidgetEvent->setCurrentIndex(2);
-}
-void MainWindow::on_add_cal_4_clicked()
-{
-    ui->stackedWidgetEvent->setCurrentIndex(2);
-}
-
-void MainWindow::on_add_cal_3_clicked()
-{
-    ui->stackedWidgetEvent->setCurrentIndex(2);
-}
-
-void MainWindow::on_add_cal_2_clicked()
-{
-    ui->stackedWidgetEvent->setCurrentIndex(2);
-}
-
-void MainWindow::on_add_cal_5_clicked()
 {
     ui->stackedWidgetEvent->setCurrentIndex(2);
 }
@@ -1497,15 +1379,3 @@ void MainWindow::on_searchevent_textEdited(const QString &arg1)
     QSqlQueryModel* model = e.rechercher(arg1);
     ui->table_event->setModel(model);
 }
-
-void MainWindow::verifyRFID() {
-    QString RFID = QString::fromLatin1(A.read_from_arduino()).trimmed(); // Convertit les données en QString
-    if (e.rechercherRFID(RFID) != 0) {
-        qDebug() << "trouvee";
-        // Vous pouvez ajouter d'autres actions ici si nécessaire
-    } else {
-        qDebug() << "non trouvee";
-        // Vous pouvez ajouter d'autres actions ici si nécessaire
-    }
-}
-

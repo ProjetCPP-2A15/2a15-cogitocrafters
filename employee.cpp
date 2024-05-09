@@ -717,24 +717,8 @@ void employee::afficherPieChart(QLabel *label)
     // Afficher le pixmap dans le QLabel
     label->setPixmap(pixmap);
 }
-void MainWindow::on_updateEmployee_2_clicked()
-{
-     ui->stackedWidgetEmployee->setCurrentIndex(1);
-}
-void MainWindow::on_updateEmployee_8_clicked()
-{
-    ui->stackedWidgetEmployee->setCurrentIndex(1);
-}
 
-void MainWindow::on_updateEmployee_7_clicked()
-{
-    ui->stackedWidgetEmployee->setCurrentIndex(1);
-}
 
-void MainWindow::on_updateEmployee_6_clicked()
-{
-    ui->stackedWidgetEmployee->setCurrentIndex(1);
-}
 void MainWindow::on_statEmployee_clicked()
 {
     ui->stackedWidgetEmployee->setCurrentIndex(4);
@@ -1174,224 +1158,174 @@ void MainWindow::on_pushButtonLogin_clicked()
           qDebug() << "function"<<emp.chercherFunction(mail);
           ui->stackedWidgetGlobal->setCurrentIndex(2);
           id = emp.chercherMailId(mail);
-          if(emp.chercherFunction(mail)=="Director")
+          if(emp.chercherFunction(mail)=="Directeur")
           {
-              //employee
-              ui->supprimer_Employee_2->show();
-              ui->statEmployee->setGeometry(740,490,61,61);
-              ui->AddEmployee_2->setGeometry(810,490,61,61);
-              ui->supprimer_Employee_2->setGeometry(640,490,61,61);
               ui->AddEmployee_2->show();
-              ui->supprimer_Employee_2->setGeometry(670,490,61,61);
-              ui->supprimer_Employee->show();
+              ui->supprimer_Employee_2->show();
+              ui->pushButton_UpDateImageEmployee->show();
               ui->updateEmployee->show();
-              ui->pdfEmployee->setGeometry(740,400,41,51);
-              ui->updateEmployee_2->setGeometry(640,400,41,51);
-              //event
+              ui->supprimer_Employee->show();
+              ui->statEmployee->show();
+
+              ui->statEmployee->setGeometry(740, 500, 61, 61);
+              ui->pdfEmployee->setGeometry(710,380,41,51);
+
+              ui->calendar_event->setGeometry(700,520,61,61);
+              ui->stat->setGeometry(630,520,61,61);
+              ui->pdfevent_2->setGeometry(740,400,41,51);
+              ui->pdfevent->setGeometry(740,400,41,51);
+
+              ui->supprimer_32->setGeometry(750,500,61,61);
+              ui->supprimer_26->setGeometry(720,410,41,41);
+
+              ui->statEmotion->setGeometry(750,500,61,61);
+              ui->pdfGuest->setGeometry(710,390,41,51);
+
+              ui->supprimer_36->setGeometry(660,500,61,61);
+
               ui->add_event_2->show();
               ui->tout_supprimer->show();
-              ui->ArduinoEvent->show();
               ui->add_cal->show();
               ui->supprimer_event_cal->show();
-              ui->add_cal_2->setGeometry(80,370,41,51);
-              ui->go_to_participer_2->show();
-              ui->supprimeParSelectionParticiper->hide();
-              ui->go_to_participer_3->show();
-              ui->updateEvent_3->show();
-              ui->supprimeParSelectionParticiper_2->show();
-              ui->updateEvent->show();
               ui->supprimer_event->show();
+              ui->updateEvent->show();
+              ui->generateAffiche->show();
+              ui->weathergenerate->show();
+              ui->go_to_participer->show();
 
-              ui->add_cal->setGeometry(130,370,41,51);
-              ui->supprimer_event_cal->setGeometry(180,370,41,51);
-              ui->supprimer_event->setGeometry(800,460,41,51);
-
-              ui->pdfevent->setGeometry(750,460,41,51);
-              ui->updateEvent->setGeometry(700,460,41,51);
-              ui->add_cal_4->setGeometry(650,460,41,51);
-              ui->generateAffiche->setGeometry(600,460,41,51);
-              ui->weathergenerate->setGeometry(550,460,41,51);
-              ui->go_to_participer->setGeometry(500,460,41,51);
-              //guest
+              ui->supprimer_GuestSelect->show();
+              ui->surv_Guest->show();
+              ui->rechercheCinCart->show();
               ui->go_to_addGuest->show();
-              ui->go_to_addGuest->setGeometry(840,490,61,61);
-              ui->statEmotion->setGeometry(770,490,61,61);
-              ui->rechercheCinCart->setGeometry(700,490,61,61);
-
-              ui->supprimer_GuestSelect->show();
-              ui->supprimer_GuestSelect->show();
-              ui->supprimer_GuestSelect->setGeometry(60,490,61,61);
-
-              ui->surv_Guest->setGeometry(130,490,61,61);
-              ui->id_events->setGeometry(200,490,61,61);
+             ui->go_to_updateGuest->show();
               ui->supprimer_Guest->show();
-              ui->supprimer_Guest->setGeometry(770,390,41,51);
-              ui->go_to_updateGuest->setGeometry(670,390,41,51);
-              ui->go_to_list_from_affSimple->setGeometry(620,390,41,51);
-              ui->go_to_updateGuest->show();
-              ui->pdfGuest->setGeometry(720,390,41,51);
-              //artist
-              ui->aradd->show();
-              ui->arsupp->show();
-              ui->arupdate->show();
-              ui->arsupp_2->show();
-              ui->ararriere_7->setGeometry(630,420,51,51);
-              //product
-              ui->listtoaddpro->show();
-              ui->suppgen->show();
-              ui->updateEmployee_5->show();
-              ui->supprimer_25->show();
-              ui->updateEmployee_3->show();
-              ui->gerervedio->setGeometry(640,470,41,41);
-              ui->lireai->setGeometry(590,470,41,41);
-              ui->liste_3->setGeometry(540,470,41,41);
-              ui->updateEmployee_3->setGeometry(690,470,41,41);
-              //Association
-              ui->listtoaddass->show();
-              ui->asupdate->show();
-              ui->supprimer_36->setGeometry(610,490,61,61);
+             ui->go_to_list_from_affSimple->show();
+
+                            ui->listtoaddpro->show();
+                            ui->suppgen->show();
+                            ui->pub->show();
+                            ui->chatbot->show();
+                            ui->pushButton_2->show();
+                            ui->updateEmployee_5->show();
+                            ui->updateEmployee_3->show();
+                            ui->supprimer_25->show();
+
+                            ui->listtoaddass->show();
+                            ui->asupdate->show();
+
+                            ui->aradd->show();
+                            ui->arsupp->show();
+                            ui->arupdate->show();
+                            ui->arassistant->show();
+                            ui->arsupp_2->show();
+                            ui->ararriere_7->show();
 
           }
           else if(emp.chercherFunction(mail)=="RH")
           {
-              //event
-              ui->supprimer_Employee_2->show();
-              ui->statEmployee->setGeometry(740,490,61,61);
-              ui->AddEmployee_2->setGeometry(810,490,61,61);
-              ui->supprimer_Employee_2->setGeometry(670,490,61,61);
+
               ui->AddEmployee_2->show();
-              ui->supprimer_Employee->show();
+              ui->supprimer_Employee_2->show();
+              ui->pushButton_UpDateImageEmployee->show();
               ui->updateEmployee->show();
-              ui->pdfEmployee->setGeometry(740,400,41,51);
-              ui->updateEmployee_2->setGeometry(640,400,41,51);
-              //event
+              ui->supprimer_Employee->show();
+
+              ui->calendar_event->setGeometry(770,520,61,61);
+              ui->stat->setGeometry(700,520,61,61);
+              ui->pdfevent_2->setGeometry(790,400,41,51);
+              ui->pdfevent->setGeometry(790,400,41,51);
+
+              ui->supprimer_32->setGeometry(820,500,61,61);
+              ui->supprimer_26->setGeometry(790,410,41,41);
+
+              ui->statEmotion->setGeometry(820,500,61,61);
+              ui->pdfGuest->setGeometry(770,390,41,51);
+
+              ui->supprimer_36->setGeometry(730,500,61,61);
               ui->add_event_2->hide();
               ui->tout_supprimer->hide();
-              ui->ArduinoEvent->hide();
               ui->add_cal->hide();
               ui->supprimer_event_cal->hide();
-              ui->add_cal_2->setGeometry(180,370,41,51);
-              ui->go_to_participer_2->hide();
-              ui->supprimeParSelectionParticiper->hide();
-              ui->go_to_participer_3->hide();
-              ui->updateEvent_3->hide();
-              ui->supprimeParSelectionParticiper_2->hide();
-              ui->updateEvent->hide();
               ui->supprimer_event->hide();
-              ui->pdfevent->setGeometry(800,460,41,51);
-              ui->add_cal_4->setGeometry(750,460,41,51);
-              ui->generateAffiche->setGeometry(700,460,41,51);
-              ui->weathergenerate->setGeometry(650,460,41,51);
-              ui->go_to_participer->setGeometry(600,460,41,51);
-              //guest
-              ui->go_to_addGuest->hide();
-              ui->supprimer_GuestSelect->hide();
-              ui->statEmotion->setGeometry(840,490,61,61);
-              ui->rechercheCinCart->setGeometry(770,490,61,61);
+              ui->updateEvent->hide();
+              ui->generateAffiche->hide();
+              ui->weathergenerate->hide();
+              ui->go_to_participer->hide();
 
               ui->supprimer_GuestSelect->hide();
-              ui->surv_Guest->setGeometry(60,490,61,61);
-              ui->id_events->setGeometry(170,490,61,61);
-              ui->supprimer_Guest->hide();
+              ui->surv_Guest->hide();
+              ui->rechercheCinCart->hide();
+              ui->go_to_addGuest->hide();
               ui->go_to_updateGuest->hide();
-              ui->pdfGuest->setGeometry(770,390,41,51);
-              ui->go_to_list_from_affSimple->setGeometry(720,390,41,51);
-              //artist
+              ui->supprimer_Guest->hide();
+              ui->go_to_list_from_affSimple->hide();
+
+              ui->listtoaddpro->hide();
+              ui->suppgen->hide();
+              ui->pub->hide();
+              ui->chatbot->hide();
+              ui->pushButton_2->hide();
+              ui->updateEmployee_5->hide();
+              ui->updateEmployee_3->hide();
+              ui->supprimer_25->hide();
+
+              ui->listtoaddass->hide();
+              ui->asupdate->hide();
+
               ui->aradd->hide();
               ui->arsupp->hide();
               ui->arupdate->hide();
+              ui->arassistant->hide();
               ui->arsupp_2->hide();
-              ui->ararriere_7->setGeometry(690,420,51,51);
-              //product
-              ui->listtoaddpro->hide();
-              ui->suppgen->hide();
-              ui->updateEmployee_5->hide();
-              ui->supprimer_25->hide();
-              ui->updateEmployee_3->hide();
-              ui->gerervedio->setGeometry(690,470,41,41);
-              ui->lireai->setGeometry(640,470,41,41);
-              ui->liste_3->setGeometry(590,470,41,41);
-              //association
-              ui->listtoaddass->hide();
-              ui->asupdate->hide();
-              ui->supprimer_36->setGeometry(750,490,61,61);
-
+              ui->ararriere_7->hide();
           }
            else//agent
           {
-              //employee
-             ui->supprimer_Employee_2->hide();
-             ui->statEmployee->setGeometry(810,490,61,61);
-             ui->AddEmployee_2->hide();
-             ui->supprimer_Employee->hide();
-             ui->updateEmployee->hide();
-             ui->pdfEmployee->setGeometry(790,400,41,51);
-             ui->updateEmployee_2->setGeometry(740,400,41,51);
-             //event
-             ui->add_event_2->show();
-             ui->tout_supprimer->show();
-             ui->ArduinoEvent->show();
-             ui->add_cal->show();
-             ui->supprimer_event_cal->show();
-             ui->add_cal_2->setGeometry(80,370,41,51);
-             ui->go_to_participer_2->show();
-             ui->supprimeParSelectionParticiper->hide();
-             ui->go_to_participer_3->show();
-             ui->updateEvent_3->show();
-             ui->supprimeParSelectionParticiper_2->show();
-             ui->updateEvent->show();
-             ui->supprimer_event->show();
+              ui->statEmployee->setGeometry(820, 500, 61, 61);
+              ui->pdfEmployee->setGeometry(770,390,41,51);
 
-             ui->add_cal->setGeometry(130,370,41,51);
-             ui->supprimer_event_cal->setGeometry(180,370,41,51);
-             ui->supprimer_event->setGeometry(800,460,41,51);
+              ui->AddEmployee_2->hide();
+              ui->supprimer_Employee_2->hide();
+              ui->pushButton_UpDateImageEmployee->hide();
+              ui->updateEmployee->hide();
+              ui->supprimer_Employee->hide();
 
-             ui->pdfevent->setGeometry(750,460,41,51);
-             ui->updateEvent->setGeometry(700,460,41,51);
-             ui->add_cal_4->setGeometry(650,460,41,51);
-             ui->generateAffiche->setGeometry(600,460,41,51);
-             ui->weathergenerate->setGeometry(550,460,41,51);
-             ui->go_to_participer->setGeometry(500,460,41,51);
-             
-           //guest
-             ui->go_to_addGuest->show();
-             ui->go_to_addGuest->setGeometry(840,490,61,61);
-             ui->statEmotion->setGeometry(770,490,61,61);
-             ui->rechercheCinCart->setGeometry(700,490,61,61);
+              ui->add_event_2->show();
+              ui->tout_supprimer->show();
+              ui->add_cal->show();
+              ui->supprimer_event_cal->show();
+              ui->supprimer_event->show();
+              ui->updateEvent->show();
+              ui->generateAffiche->show();
+              ui->weathergenerate->show();
+              ui->go_to_participer->show();
 
-             ui->supprimer_GuestSelect->show();
-             ui->supprimer_GuestSelect->show();
-             ui->supprimer_GuestSelect->setGeometry(60,490,61,61);
-
-             ui->surv_Guest->setGeometry(130,490,61,61);
-             ui->id_events->setGeometry(200,490,61,61);
-             ui->supprimer_Guest->show();
-             ui->supprimer_Guest->setGeometry(770,390,41,51);
-             ui->go_to_updateGuest->setGeometry(670,390,41,51);
-             ui->go_to_list_from_affSimple->setGeometry(620,390,41,51);
+              ui->supprimer_GuestSelect->show();
+              ui->surv_Guest->show();
+              ui->rechercheCinCart->show();
+              ui->go_to_addGuest->show();
              ui->go_to_updateGuest->show();
-             ui->pdfGuest->setGeometry(720,390,41,51);
-             //artist
-             ui->aradd->show();
-             ui->arsupp->show();
-             ui->arupdate->show();
-             ui->arsupp_2->show();
-             ui->ararriere_7->setGeometry(630,420,51,51);
+              ui->supprimer_Guest->show();
+             ui->go_to_list_from_affSimple->show();
 
-             //product
              ui->listtoaddpro->show();
              ui->suppgen->show();
+             ui->pub->show();
+             ui->chatbot->show();
+             ui->pushButton_2->show();
              ui->updateEmployee_5->show();
-             ui->supprimer_25->show();
              ui->updateEmployee_3->show();
-             ui->gerervedio->setGeometry(640,470,41,41);
-             ui->lireai->setGeometry(590,470,41,41);
-             ui->liste_3->setGeometry(540,470,41,41);
-             ui->updateEmployee_3->setGeometry(690,470,41,41);
-             //Association
-             ui->listtoaddass->show();
-             ui->asupdate->show();
-             ui->supprimer_36->setGeometry(610,490,61,61);
+             ui->supprimer_25->show();
+
+                            ui->listtoaddass->show();
+                            ui->asupdate->show();
+
+                            ui->aradd->show();
+                            ui->arsupp->show();
+                            ui->arupdate->show();
+                            ui->arassistant->show();
+                            ui->arsupp_2->show();
+                            ui->ararriere_7->show();
           }
 
           ui->tabEmployee->setModel(emp.afficherEmployee());

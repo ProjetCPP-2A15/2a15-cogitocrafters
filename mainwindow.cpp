@@ -1,40 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QMessageBox>
-#include <QCoreApplication>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
-#include <QDebug>
-#include <QPdfWriter>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonValue>
-#include <QJsonArray>
-#include <QDebug>
-#include <QFileDialog>
-
-#include <QPrinter>
-
-#include <QPainter>
-#include <QProcess>
-#include <QDebug>
-#include <QQuickItem>
-#include <QObject>
-
-
-#include <QWidget>
-//#include <QVideoWidget>
-//#include <QQuickWidget>
-#include <QVideoProbe>
-#include <QMovie>
-
 
 
 
@@ -89,34 +54,25 @@ MainWindow::MainWindow(QWidget *parent)
      ui->tableView_4->setSelectionMode(QAbstractItemView::ExtendedSelection);
 speech = new QTextToSpeech(this);
 
-int ret=A.connect_arduino();
-               // lancer la connexion à arduino
-              switch(ret){
-              case(0):qDebug()<< "arduino is available and connected to : "<< A.getarduino_port_name();
-                  break;
-              case(1):qDebug() << "arduino is available but not connected to :" <<A.getarduino_port_name();
-                 break;
-              case(-1):qDebug() << "arduino is not available";
-              }
 
-              QObject::connect(A.getserial(),SIGNAL(readyRead()),this,SLOT(update_label())); // permet de lancer
-                   //le slot update_label suite à la reception du signal readyRead (reception des données).
-                   dataw="0";
-                   // Initialize nbrvue with the current number from the QLineEdit
-                     QString existingCount = ui->nbvu->text();
-                     nbrvue = existingCount.isEmpty() ? 0 : existingCount.toInt();
 
-                     // Initialize other components and variables as necessary
-                     safe = false;  // Ensure 'safe' is initialized
-                     connect(ui->on, &QPushButton::clicked, this, &MainWindow::displayMostViewedArticleName);
+//#################################### Arduino(IYED ET DHIA) ############################################
+/*#####################################################################################################*/
+        int ret=A.connect_arduino(); // lancer la connexion à arduino
+        switch(ret){
+        case(0):qDebug()<< "arduino is available and connected to : "<< A.getarduino_port_name();
+            break;
+        case(1):qDebug() << "arduino is available but not connected to :" <<A.getarduino_port_name();
+           break;
+        case(-1):qDebug() << "arduino is not available";
+        }
+         QObject::connect(A.getserial(),SIGNAL(readyRead()),this,SLOT(update_label())); // permet de lancer
+         //le slot update_label suite à la reception du signal readyRead (reception des données).
+         A.write_to_arduino("1"); //envoyer 1 à arduino
+         count = 0;
 
 
 
-                     //animation:
-                     QMovie *movie = new QMovie("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/logogi.gif");
-                     movie->setScaledSize(ui->logo->size());
-                     ui->logo->setMovie(movie);
-                     movie->start();
 }
 
 MainWindow::~MainWindow()
@@ -124,19 +80,68 @@ MainWindow::~MainWindow()
     delete ui;
     delete manager;
     delete speech;
+    //A.write_to_arduino("0");
+}
+
+void MainWindow::update_label()
+{
+    //A.write_to_arduino(dataw); //envoyer 1 à arduino
+
+    data = A.read_from_arduino();
+    ui->label_3->setText(data);
+    // int dist = data.toInt();
+    if (!data.trimmed().isEmpty() && data.trimmed() != "0") {
+        if (data.trimmed().toInt() <= 10 && !safe) {
+            safe = true;
+            int nbrvue=article.getNbVuById(202)+1;
+            article.modifierNbVu(202,nbrvue);
+        }
+        if (data.trimmed().toInt() > 10) {
+            safe = false;
+        }
+    }
+    if(data.trimmed().toInt()<=5)
+        ui->label_5->setText("Danger");
+    else if(data.trimmed().toInt()<=10)
+        ui->label_5->setText("Personne p");
+    else
+        ui->label_5->setText("Libre");
+   // qDebug() << data.trimmed();
+   // qDebug() << safe;
+    ui->nbvu->setText(QString::number(article.getNbVuById(202)));
+
+    //if(count==10){
+    int nbrvue = article.getNbVuById(202);
+
+    // Convertir nbrvue en une chaîne de caractères
+    QString str_nbrvue = QString::number(nbrvue);
+
+    // Envoyer le caractère 'N' à Arduino pour indiquer le début de l'envoi des chiffres
+    A.write_to_arduino("N");
+
+    // Envoyer chaque chiffre un par un à Arduino
+    for (int i = 0; i < str_nbrvue.length(); i++) {
+      A.write_to_arduino(QString(str_nbrvue.at(i)).toStdString().c_str());
+      qDebug()<< QString(str_nbrvue.at(i)).toStdString().c_str();
+    }
+
+    // Envoyer le caractère 'B' à Arduino pour indiquer la fin de l'envoi des chiffres
+    A.write_to_arduino("B");
+    //count=0;
+    //}else{count++;
+    //qDebug()<< count;
+   // }
+
 
 }
 void MainWindow::selectButton(QPushButton *button) {
-    button->setStyleSheet("background: rgb(0, 135, 99);box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);border: none;font-family: 'Athiti';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;text-align: center;color: #000;border-radius:15px;border-bottom:3px solid #000;");
+    button->setStyleSheet("background: #8BD086;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);border: none;font-family: 'Athiti';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;text-align: center;color: #2A501F;border-radius:15px;border-bottom:3px solid #669B37;");
 }
-
 
 // Fonction pour désélectionner un bouton
 void MainWindow::deselectButton(QPushButton *button) {
-    button->setStyleSheet("QPushButton {background: transparent;border: none;font-family: 'Athiti';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;text-align: center;color: #000;border-radius:15px;border-bottom:3px solid #000;}QPushButton:hover {background: rgb(0, 135, 99);box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);}");
+    button->setStyleSheet("QPushButton {background: #A9E4A4;border: none;font-family: 'Athiti';font-style: normal;font-weight: 700;font-size: 20px;line-height: 32px;text-align: center;color: #2A501F;border-radius:15px;border-bottom:3px solid #669B37;}QPushButton:hover {background: #8BD086;box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);}");
 }
-
-
 
 void MainWindow::on_pushButtonEmployee_clicked()
 {
@@ -148,7 +153,7 @@ void MainWindow::on_pushButtonEmployee_clicked()
     deselectButton(ui->pushButtonGuest);
     deselectButton(ui->pushButtonArtist);
     deselectButton(ui->pushButtonAssociation);
-    //deselectButton(ui->pushButtonSetting);
+    deselectButton(ui->pushButtonSetting);
     selectButton(ui->pushButtonEmployee);
 
 }
@@ -169,8 +174,7 @@ void MainWindow::on_pushButtonEvents_clicked()
         deselectButton(ui->pushButtonGuest);
         deselectButton(ui->pushButtonArtist);
         deselectButton(ui->pushButtonAssociation);
-        deselectButton(ui->pushButtonEmployee);
-        //deselectButton(ui->pushButtonSetting);
+        deselectButton(ui->pushButtonSetting);
         ui->weather->clear();
         ui->weatherIcon->clear();
 }
@@ -197,9 +201,7 @@ void MainWindow::on_pushButtonArtist_clicked()
     deselectButton(ui->pushButtonGuest);
     selectButton(ui->pushButtonArtist);
     deselectButton(ui->pushButtonAssociation);
-    deselectButton(ui->pushButtonEmployee);
-
-    //deselectButton(ui->pushButtonSetting);
+    deselectButton(ui->pushButtonSetting);
 }
 
 
@@ -215,9 +217,7 @@ void MainWindow::on_pushButtonAssociation_clicked()
     deselectButton(ui->pushButtonGuest);
     deselectButton(ui->pushButtonArtist);
     selectButton(ui->pushButtonAssociation);
-    deselectButton(ui->pushButtonEmployee);
-
-    //deselectButton(ui->pushButtonSetting);
+    deselectButton(ui->pushButtonSetting);
     ui->tableView_22->setModel(as.afficher());
 }
 
@@ -233,183 +233,3 @@ void MainWindow::on_updateEmployee_3_clicked()
 }
 
 
-//partie iheb
-
-
-void MainWindow::updateInfoText(QString info) {
-    ui->adress_a->setText(info);
-}
-
-
-void MainWindow::on_listtoaddass_clicked()
-{
-    ui->stackedWidgetAssociation->setCurrentIndex(1);
-    ui->quickWidget->setSource(QUrl(QStringLiteral("qrc:/map.qml")));
-    ui->quickWidget->show();
-
-    // Obtain the root QML object
-    QQuickItem *item = qobject_cast<QQuickItem*>(ui->quickWidget->rootObject()); // Ensure "item" is declared here
-
-    if (item) {
-        QObject *obj = dynamic_cast<QObject*>(item);
-        if (obj) {
-            // Successfully casted
-            // Connect signals and slots here
-            QObject::connect(obj, SIGNAL(infoTextChanged(QString)), this, SLOT(updateInfoText(QString)));
-        } else {
-            // Failed to cast to QObject
-            // Handle the error
-        }
-    } else {
-        // Root object is null
-        // Handle the error
-    }
-}
-
-
-
-
-void MainWindow::on_confirmer_clicked()
-{
-    // Récupérer les valeurs de latitude et de longitude de adress_a
-    QString coordinates = ui->adress_a->text();
-
-    QStringList coordinateList = coordinates.split(',');
-    if (coordinateList.size() != 2) {
-        qDebug() << "Erreur: Coordonnées invalides";
-        return;
-    }
-
-    QString latitude = coordinateList[0].trimmed();
-    QString longitude = coordinateList[1].trimmed();
-    qDebug() << "Latitude :" << latitude;
-    qDebug() << "Longitude :" << longitude;
-
-    // Créer un processus pour exécuter le script Python
-    QProcess *process = new QProcess(this);
-
-    // Définir le chemin du script Python et ses arguments
-    QString pythonScript = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/city.py";
-    QStringList arguments;
-    QString tude = latitude+","+longitude;
-    arguments << pythonScript << tude; // Passer les coordonnées en tant qu'une seule chaîne avec une virgule comme séparateur
-
-    // Lancer le script Python en tant que processus externe
-    process->start("python", arguments);
-    process->waitForFinished();
-
-    // Lire la sortie standard du processus (nom de la ville)
-    QByteArray result = process->readAllStandardOutput();
-    QString city = QString::fromUtf8(result).trimmed(); // Convertir la sortie en QString et supprimer les espaces inutiles
-
-    // Afficher le nom de la ville dans le label adress_a_2
-    ui->adress_a_2->setText(city);
-    qDebug() << "Nom de la ville reçu depuis l'API de Nominatim :" << city;
-}
-
-
-
-
-
-
-
-void MainWindow::on_pushButton_clicked()
-{
-    process = new QProcess(this);
-      QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/sonwithmicro.py";
-
-      // Démarrer le script Python
-      process->start("python", QStringList() << scriptPath);
-
-      // Connexion pour lire la sortie standard
-      connect(process, &QProcess::readyReadStandardOutput, this, &MainWindow::updateOutput);
-      //connect(process, &QProcess::finished, process, &QProcess::deleteLater);
-
-      // Optionnellement, gérer la sortie d'erreur
-      connect(process, &QProcess::readyReadStandardError, this, &MainWindow::handleError);
-}
-void MainWindow::updateOutput() {
-    QByteArray data = process->readAllStandardOutput();
-    QString output(data);
-    // Mettez à jour une interface utilisateur ou un widget avec 'output' si nécessaire
-}
-
-void MainWindow::handleError() {
-    QByteArray data = process->readAllStandardError();
-    QString error(data);
-    // Afficher l'erreur dans un widget de journalisation ou la console
-    qDebug() << "Error:" << error;
-}
-
-//scenario iyed
-void MainWindow::update_label()
-{
-    data = A.read_from_arduino();  // A doit être une instance d'un objet qui a la méthode read_from_arduino()
-    ui->label_57->setText(data);
-
-    if (!data.trimmed().isEmpty() && data.trimmed() != "0") {
-        int currentDistance = data.trimmed().toInt();
-        if (currentDistance <= 10 && !safe) {
-
-            QString nb = ui->nbvu->text();
-            int nombre = nb.toInt();
-
-            safe = true;
-            nombre=nombre+1;
-            ui->nbvu->setText(QString::number(nombre));
-
-            Article article;
-            article.updateNbVu(idA, nombre);
-            displayMostViewedArticleName();
-
-        }
-        else if (currentDistance > 10 && safe) {
-                   safe = false;
-               }
-}
-    qDebug() << data.trimmed();
-    ui->nbvu->setEnabled(false);
-
-    qDebug() << safe;
-}
-
-
-
-
-
-void MainWindow::on_off_clicked()
-{
-    A.write_to_arduino("2"); //envoyer 1 à arduino
-
-}
-
-void MainWindow::on_on_clicked()
-{
-    A.write_to_arduino("1"); //envoyer 1 à arduino
-
-}
-
-void MainWindow::displayMostViewedArticleName() {
-    QSqlQuery query;
-    query.prepare("SELECT nom_article FROM ARTICLE WHERE nbvu = (SELECT MAX(nbvu) FROM ARTICLE)");
-
-    if (query.exec() && query.next()) {
-        QString articleName = query.value(0).toString();
-        ui->lineEditMostViewedArticleName->setText(articleName.isEmpty() ? "No articles found" : articleName);
-        if (!articleName.isEmpty()) {
-                    sendArticleNameToArduino(articleName);
-                }
-    } else {
-        ui->lineEditMostViewedArticleName->setText("No articles found or error in query execution");
-        qDebug() << "Failed to execute query or no articles found:" << query.lastError().text();
-    }
-}
-
-
-
-void MainWindow::sendArticleNameToArduino(const QString &name) {
-    if (A.connect_arduino()) {
-        QString command = name + '\n';
-        A.write_to_arduino(command.toUtf8());
-    }
-}

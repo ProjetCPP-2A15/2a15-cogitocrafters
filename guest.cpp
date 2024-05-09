@@ -3,7 +3,7 @@
 #include <QFile>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include"evenement.h"
+
 
 Guest::Guest(int c,QString n, int a, QString g, QString adr, int ph, QString e,QString i)
 {
@@ -262,6 +262,27 @@ QSqlQueryModel* Guest::afficher_tri_Email(bool checked)
 
 //                                            Partie Guest
 
+void MainWindow::on_pushButtonGuest_clicked()
+{
+    ui->StackedWidget->setCurrentIndex(2);
+    ui->stackedWidgetGuest->setCurrentIndex(0);
+    ui->tableViewGuest->setModel(g.afficher());
+
+    deselectButton(ui->pushButtonEvents);
+    deselectButton(ui->pushButtonProduct);
+    selectButton(ui->pushButtonGuest);
+    deselectButton(ui->pushButtonArtist);
+    deselectButton(ui->pushButtonAssociation);
+    deselectButton(ui->pushButtonSetting);
+    ui->addCinGuest->clear();
+    ui->addNameGuest->clear();
+    ui->addAgeGuest->clear();
+    ui->addAddressGuest->clear();
+    ui->addEmailGuest->clear();
+    ui->addPhoneGuest->clear();
+
+
+}
 /******************************************* Go To Affichage Simple From Add ****************************************************/
 void MainWindow::on_go_to_affSimple_from_addGuest_clicked()
 {
@@ -299,7 +320,7 @@ void MainWindow::on_go_to_affSimple_from_addGuest_clicked()
     QRegularExpression emailRegex(R"(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)");
 
     QProcess process;
-    QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/guest/persondetector/2.py";
+    QString scriptPath = "C:/Users/Emna Nkhili/Desktop/noblePalette/noblePalette/script/guest/persondetector/2.py";
     QStringList arguments;
     arguments << g.getImage(); // Ajoutez vos arguments ici
     process.start("python", QStringList() << scriptPath << arguments);
@@ -515,7 +536,7 @@ void MainWindow::on_go_to_addSimple_from_update_clicked()
      {
 
          QProcess process;
-         QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/guest/persondetector/2.py";
+         QString scriptPath = "C:/Users/Emna Nkhili/Desktop/noblePalette/noblePalette/script/guest/persondetector/2.py";
 
          QStringList arguments;
          arguments << g.getImage(); // Ajoutez vos arguments ici
@@ -630,7 +651,7 @@ void MainWindow::on_pdfGuest_clicked()
 
 void MainWindow::on_rechercheCinCart_clicked()
 {
-    QString pythonScript = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/guest/cinCart.py";
+    QString pythonScript = "C:/Users/Emna Nkhili/Desktop/noblePalette/noblePalette/script/guest/cinCart.py";
 
     // Chemin vers l'image à traiter
 
@@ -757,7 +778,7 @@ void MainWindow::on_statEmotion_clicked()
     QString videoPath = QFileDialog::getOpenFileName(nullptr, "Sélectionner une vidéo", "", "Fichiers vidéo (*.mp4 *.avi *.mov)");
 
     // Chemin d'accès à votre script Python
-    QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/guest/Emotion_Detection/test.py"; // Remplacez "chemin/vers/votre/script.py" par votre propre chemin d'accès
+    QString scriptPath = "C:/Users/meddh/Desktop/py/Emotion_Detection/test.py"; // Remplacez votre propre chemin d'accès
 
     // Créer un processus pour exécuter le script Python
     QProcess process;
@@ -953,7 +974,7 @@ void MainWindow::on_tri_Demail_clicked()
 void MainWindow::on_surv_Guest_clicked()
 {
     QSqlQueryModel* model = p.idGuests(1);
-    QString dossierDeDestination = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/guest/easy_facial_recognition-master/known_faces";
+    QString dossierDeDestination = "C:/Users/meddh/Desktop/py/easy_facial_recognition-master/known_faces";
 
     for (int row = 0; row < model->rowCount(); ++row) {
 
@@ -978,7 +999,7 @@ void MainWindow::on_surv_Guest_clicked()
     }
 
     QProcess process;
-    QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/guest/easy_facial_recognition-master/easy_facial_recognition.py";
+    QString scriptPath = "C:/Users/meddh/Desktop/py/easy_facial_recognition-master/easy_facial_recognition.py";
 
     QString VideoPath = QFileDialog::getOpenFileName(nullptr, "Sélectionner une video", "", "Fichiers vidéo (*.mp4 *.avi *.mov)");
     QStringList arguments;
@@ -991,6 +1012,7 @@ void MainWindow::on_surv_Guest_clicked()
     if (!process.waitForStarted()) {
         qDebug() << "Erreur: Impossible de démarrer le processus.";
     }
+
     if (!process.waitForFinished()) {
         qDebug() << "Erreur: Le processus a échoué ou a pris trop de temps pour se terminer.";
     }
@@ -1013,8 +1035,10 @@ void MainWindow::on_surv_Guest_clicked()
     while (matchIterator.hasNext()) {
         QRegularExpressionMatch match = matchIterator.next();
         //qDebug() << match.captured();
-        int ev= ui->id_events->currentText().toInt();
-        p.precenceGuest(ev,match.captured().toInt());//*************************************** chenzid hne event emna*/
+        p.precenceGuest(1,match.captured().toInt());//*************************************** chenzid hne event emna*/
     }
 
 }
+
+
+

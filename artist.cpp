@@ -283,7 +283,7 @@ QStringList Artiste::obtenirTousArtistes()
 {
     QStringList artistes;
     QSqlQuery query;
-    query.prepare("SELECT NOM FROM TABLE1");
+    query.prepare("SELECT NOM FROM TABLE1"); // Remplacez TABLE1 par le nom de votre table d'artistes
     if(query.exec())
     {
         while(query.next())
@@ -356,8 +356,6 @@ void MainWindow::on_arsupp_clicked()
 {
     ui->stackedWidgetArtist->setCurrentIndex(3);
 }
-
-
 
 
 
@@ -695,7 +693,7 @@ void MainWindow::on_arajouter_clicked() {
 
     // Exécuter la fonction de vérification de l'image en utilisant Python
     QProcess process;
-    process.start("python", QStringList() << "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/CIN.py" << imagePath);
+    process.start("python", QStringList() << "C:/Users/Emna Nkhili/Downloads/CIN.py" << imagePath);
     process.waitForFinished();
 
     QString output = process.readAllStandardOutput();
@@ -903,7 +901,7 @@ void MainWindow::on_arupdate_2_clicked() {
 
     // Exécuter la fonction de vérification de l'image en utilisant Python
     QProcess process;
-    process.start("python", QStringList() << "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/CIN.py" << imagePath);
+    process.start("python", QStringList() << "C:/Users/Emna Nkhili/Downloads/CIN.py" << imagePath);
     process.waitForFinished();
     QString output = process.readAllStandardOutput();
 
@@ -1144,81 +1142,66 @@ void MainWindow::on_arsearchTextBox_textChanged(const QString &arg1)
 
 
 
+
+
+
 void MainWindow::on_arstat_clicked()
 {
     QSqlQueryModel *model = new QSqlQueryModel();
-      model->setQuery("SELECT sexe FROM TABLE1");
+    model->setQuery("SELECT sexe FROM TABLE1");
 
-      int countMale = 0;
-      int countFemale = 0;
-      int countOther = 0;
+    int countMale = 0;
+    int countFemale = 0;
+    int countOther = 0;
 
-      for (int i = 0; i < model->rowCount(); ++i) {
-          QString sexe = model->record(i).value("sexe").toString();
-          if (sexe == "Man") {
-              ++countMale;
-          } else if (sexe == "Woman") {
-              ++countFemale;
-          } else {
-              ++countOther;
-          }
-      }
-
-      int total = countMale + countFemale + countOther;
-
-
-    // Création du pixmap pour dessiner le pie chart
-    QSize pixmapSize(581, 371);
-    QPixmap pixmap(pixmapSize);
-    pixmap.fill(Qt::transparent); // Fond transparent
-
-    QPainter painter(&pixmap);
-    painter.setRenderHint(QPainter::Antialiasing);
-
-    // Variables pour le dessin du pie chart
-    QRectF pieRect(10, 10, pixmapSize.width() - 220, pixmapSize.height() - 20);
-    qreal startAngle = 0.0;
-
-    // Dessiner chaque tranche du pie chart
-    QStringList labels;
-    QList<int> counts;
-    labels << "Man" << "Woman" << "Other";
-    counts << countMale << countFemale << countOther;
-
-    for (int i = 0; i < labels.size(); ++i) {
-        qreal sweepAngle = 360.0 * counts[i] / total;
-        QColor sliceColor = QColor::fromHsv((i * 30) % 360, 100, 200); // Couleur pastel pour chaque tranche
-        painter.setBrush(sliceColor); // Définir la couleur de la tranche
-        painter.drawPie(pieRect, startAngle * 16, sweepAngle * 16);
-
-        // Dessiner un carré de couleur à côté du pie chart
-        QRectF colorRect(pixmapSize.width() - 200, 20 + i * 30, 20, 20); // Position et taille du carré de couleur
-        painter.fillRect(colorRect, sliceColor);
-
-        // Afficher le label à côté du carré de couleur
-        QString label = labels[i];
-        QPointF labelPos = colorRect.topRight() + QPointF(30, 15); // Position pour afficher le label à côté du carré de couleur
-        painter.drawText(labelPos, label);
-
-        // Calcul du pourcentage
-        double percentage = (static_cast<double>(counts[i]) / total) * 100;
-        QString percentageText = QString::number(percentage, 'f', 1) + "%";
-
-        // Afficher le pourcentage à côté du carré de couleur
-        QPointF textPos = colorRect.topRight() + QPointF(130, 15); // Position pour afficher le texte à côté du carré de couleur
-        painter.drawText(textPos, percentageText);
-
-        startAngle += sweepAngle;
+    for (int i = 0; i < model->rowCount(); ++i) {
+        QString sexe = model->record(i).value("sexe").toString();
+        if (sexe == "Man") {
+            ++countMale;
+        } else if (sexe == "Woman") {
+            ++countFemale;
+        } else {
+            ++countOther;
+        }
     }
 
-    painter.end();
- ui->stackedWidgetArtist->setCurrentIndex(6);
-    // Afficher le pixmap dans le QLabel
-    ui->label_statArtist->setPixmap(pixmap);
+    int total = countMale + countFemale + countOther;
 
-    // Nettoyer les ressources
-    // Assurez-vous de supprimer toutes les instances de QPieSeries, QChart, etc.
+    QPieSeries *series = new QPieSeries();
+    if (countMale != 0)
+        series->append("Man", countMale);
+    if (countFemale != 0)
+        series->append("Woman", countFemale);
+    if (countOther != 0)
+        series->append("Other", countOther);
+
+    // Définir les couleurs des tranches
+    QStringList colors = {"#ff0000", "#00ff00", "#0000ff"}; // Rouge, vert, bleu
+    int colorIndex = 0;
+    for (QPieSlice *slice : series->slices()) {
+        slice->setColor(QColor(colors[colorIndex]));
+        colorIndex = (colorIndex + 1) % colors.size();
+        QString label = slice->label();
+        double percentage = (slice->percentage() * 100.0);
+        slice->setLabel(QString("%1 %2%").arg(label).arg(percentage, 0, 'f', 1));
+        slice->setLabelVisible();
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->setTitle("Total " + QString::number(total));
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+    chartView->resize(1000, 500);
+
+    chart->legend()->hide();
+    chartView->show();
+
 }
+
+
+
 
 
 
@@ -1577,7 +1560,7 @@ void MainWindow::on_arassistant_clicked()
     QProcess *process = new QProcess(this);
 
     // Définir le chemin vers le script Python
-    QString pythonScriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/yassine.py";
+    QString pythonScriptPath = "C:/Users/Emna Nkhili/Downloads/yassine.py";
 
     // Exécuter le script Python en tant que processus
     process->start("python", QStringList() << pythonScriptPath);
@@ -1639,7 +1622,7 @@ void MainWindow::on_arassistant_clicked()
 void MainWindow::on_scann_clicked()
 {
     QProcess process;
-    process.start("python", { "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/scann.py" });
+    process.start("python", { "C:/Users/Emna Nkhili/Downloads/scann.py" });
     process.waitForFinished();
 
     // Afficher les messages de débogage dans la console
@@ -1654,7 +1637,7 @@ void MainWindow::on_scann_2_clicked()
 {
 
         QProcess process;
-        process.start("python", { "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/scann.py" });
+        process.start("python", { "C:/Users/Emna Nkhili/Downloads/scann.py" });
         process.waitForFinished();
         QString output = process.readAllStandardOutput();
        ui->arnom->setText(output);
@@ -1666,7 +1649,7 @@ void MainWindow::on_scann_3_clicked()
 {
 
         QProcess process;
-        process.start("python", { "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/scann.py" });
+        process.start("python", { "C:/Users/Emna Nkhili/Downloads/scann.py" });
         process.waitForFinished();
         QString output = process.readAllStandardOutput();
        ui->arprenom->setText(output);
@@ -1678,7 +1661,7 @@ void MainWindow::on_scann_4_clicked()
 {
 
         QProcess process;
-        process.start("python", { "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/scann.py" });
+        process.start("python", { "C:/Users/Emna Nkhili/Downloads/scann.py" });
         process.waitForFinished();
         QString output = process.readAllStandardOutput();
        ui->aradresse->setText(output);
@@ -1690,7 +1673,7 @@ void MainWindow::on_scann_5_clicked()
 {
 
         QProcess process;
-        process.start("python", { "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/scann.py" });
+        process.start("python", { "C:/Users/Emna Nkhili/Downloads/scann.py" });
         process.waitForFinished();
         QString output = process.readAllStandardOutput();
        ui->artelephone->setText(output);
@@ -1702,7 +1685,7 @@ void MainWindow::on_scann_6_clicked()
 {
 
         QProcess process;
-        process.start("python", { "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/scann.py" });
+        process.start("python", { "C:/Users/Emna Nkhili/Downloads/scann.py" });
         process.waitForFinished();
         QString output = process.readAllStandardOutput();
        ui->ardomaine->setText(output);
@@ -1714,7 +1697,7 @@ void MainWindow::on_scann_7_clicked()
 {
 
         QProcess process;
-        process.start("python", { "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/scann.py" });
+        process.start("python", { "C:/Users/Emna Nkhili/Downloads/scann.py" });
         process.waitForFinished();
         QString output = process.readAllStandardOutput();
        ui->armail->setText(output);
@@ -1726,7 +1709,7 @@ void MainWindow::on_scann_8_clicked()
 {
 
         QProcess process;
-        process.start("python", { "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/scann.py" });
+        process.start("python", { "C:/Users/Emna Nkhili/Downloads/scann.py" });
         process.waitForFinished();
         QString output = process.readAllStandardOutput();
        ui->ardescription->setText(output);
@@ -1941,10 +1924,6 @@ void MainWindow::on_asc_7_clicked()
 
 
 
-void MainWindow::on_listart_clicked()
-{
-     ui->stackedWidgetArtist->setCurrentIndex(0);
-}
 
 
 

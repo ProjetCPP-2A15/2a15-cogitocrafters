@@ -86,8 +86,8 @@ public:
     QSqlQueryModel* afficher_tri_dimension_ascendant();
     QSqlQueryModel* afficher_tri_poids_descendant();
     QSqlQueryModel* afficher_tri_poids_ascendant();
-    bool updateNbVu(int id_article, int newNbVu) ;
-
+    bool modifierNbVu(int id_article,int nbvu);
+    int getNbVuById(int id_article);
 
 };
 

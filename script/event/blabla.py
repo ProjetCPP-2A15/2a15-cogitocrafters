@@ -45,7 +45,7 @@ def download_and_save_image(image_url, save_directory, filename):
 def main(query):
     image_url = fetch_image_url(query)
     if image_url:
-        save_directory = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/event"
+        save_directory = "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\event"
         img_path = download_and_save_image(image_url, save_directory, "image.jpg")
         if img_path:
             print("Image téléchargée avec succès :", img_path)

@@ -4,32 +4,32 @@ import sys
 
 # Dictionnaire de l'alphabet en langue des signes
 alphabet_lsf = {
-   "a": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/a.jpg",
-    "b": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/b.jpg",
-    "c": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/c.jpg",
-    "d": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/d.jpg",
-    "e": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/e.jpg",
-    "f": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/f.jpg",
-    "g": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/g.jpg",
-    "h": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/h.jpg",
-    "i": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/i.jpg",
-    "j": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/j.jpg",
-    "k": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/k.jpg",
-    "l": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/l.jpg",
-    "m": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/m.jpg",
-    "n": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/n.jpg",
-    "o": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/o.jpg",
-    "p": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/p.jpg",
-    "q": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/q.jpg",
-    "r": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/r.jpg",
-    "s": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/s.jpg",
-    "t": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/t.jpg",
-    "u": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/u.jpg",
-    "v": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/v.jpg",
-    "w": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/w.jpg",
-    "x": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/x.jpg",
-    "y": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/y.jpg",
-    "z": "c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/alpha/z.jpg"
+   "a": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\a.jpg",
+    "b": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\b.jpg",
+    "c": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\c.jpg",
+    "d": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\d.jpg",
+    "e": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\e.jpg",
+    "f": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\f.jpg",
+    "g": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\g.jpg",
+    "h": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\h.jpg",
+    "i": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\i.jpg",
+    "j": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\j.jpg",
+    "k": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\k.jpg",
+    "l": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\l.jpg",
+    "m": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\m.jpg",
+    "n": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\n.jpg",
+    "o": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\o.jpg",
+    "p": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\p.jpg",
+    "q": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\q.jpg",
+    "r": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\r.jpg",
+    "s": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\s.jpg",
+    "t": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\t.jpg",
+    "u": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\u.jpg",
+    "v": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\v.jpg",
+    "w": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\w.jpg",
+    "x": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\x.jpg",
+    "y": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\y.jpg",
+    "z": "c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\alpha\\z.jpg"
     # Ajoutez les autres lettres de l'alphabet ici
 }
 
@@ -87,6 +87,6 @@ if __name__ == '__main__':
     # Vérifier si un argument de texte est fourni lors de l'exécution du script
     if len(sys.argv) > 1:
         texte = ' '.join(sys.argv[1:])  # Concaténer tous les arguments en une seule chaîne
-        creer_video_depuis_texte(texte, 'c:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/sortie_video.avi')
+        creer_video_depuis_texte(texte, 'c:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\script\\article\\sortie_video.avi')
     else:
         print("Aucun texte fourni en argument.")

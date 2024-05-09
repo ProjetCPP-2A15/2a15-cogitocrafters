@@ -40,13 +40,7 @@ void Participer::precenceGuest(int id_event, int id_guest) {
 QSqlQueryModel* Participer::getGuestsInfo(int idevent) {
     QSqlQueryModel *model = new QSqlQueryModel();
     QSqlQuery query;
-    query.prepare("SELECT CAST(GUEST.CIN AS varchar(255)) AS CIN, "
-                  "       GUEST.name AS Name, "
-                  "       CAST(GUEST.phone AS varchar(255)) AS Phone, "
-                  "       CASE "
-                  "           WHEN PARTICIPER.presence = 0 THEN 'Absent' "
-                  "           WHEN PARTICIPER.presence = 1 THEN 'Present' "
-                  "       END AS Presence_Status "
+    query.prepare("SELECT CAST(GUEST.CIN AS varchar(255)), GUEST.name, CAST(GUEST.phone AS varchar(255)) "
                   "FROM PARTICIPER "
                   "INNER JOIN GUEST ON PARTICIPER.IDGUEST = GUEST.CIN "
                   "WHERE PARTICIPER.IDEVENT = :idevent");
@@ -59,17 +53,8 @@ QSqlQueryModel* Participer::getGuestsInfo(int idevent) {
     }
 
     model->setQuery(query);
-
-    // Spécifier les noms de colonnes pour le modèle
-    model->setHeaderData(0, Qt::Horizontal, QObject::tr("CIN"));
-    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Name"));
-    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Phone"));
-    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Presence Status"));
-
     return model;
 }
-
-
 
 bool Participer::supprimerp(int cin)
 {
@@ -105,12 +90,12 @@ bool Participer::ajouterp()
 {
     Connection connection;
 
+
     QSqlQuery query;
-    query.prepare("INSERT INTO Participer (idguest, idevent, presence) VALUES (:idguest, :idevent, :presence)");
+    query.prepare("INSERT INTO Participer (idguest, idevent) VALUES (:idguest, :idevent)");
 
     query.bindValue(":idguest", this->idGuest);
     query.bindValue(":idevent", this->idEvent);
-    query.bindValue(":presence", 0); // Ajout de la valeur 0 pour la colonne presence
 
     if (!query.exec()) {
         qDebug() << "Erreur d'exécution de la requête SQL:" << query.lastError().text();
@@ -119,7 +104,6 @@ bool Participer::ajouterp()
 
     return true; // Retourner true si l'ajout a réussi
 }
-
 
 //mainwindow participer
 

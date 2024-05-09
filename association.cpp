@@ -164,6 +164,11 @@ QSqlQueryModel* Association::afficher_tri_adresse() {
 //-------------------------------***** partie association *****-------------------------------
 
 
+void MainWindow::on_listtoaddass_clicked()
+{
+    ui->stackedWidgetAssociation->setCurrentIndex(1);
+
+}
 
 
 
@@ -172,7 +177,7 @@ void MainWindow::on_save_a_clicked()
     // Récupérer les valeurs des champs
         QString budgetText = ui->budget_a->text();
         QString nom = ui->name_a->text();
-        QString adresse = ui->adress_a_2->text();
+        QString adresse = ui->adress_a->text();
         QString description = ui->desc_a->text();
         QString type;
 
@@ -206,7 +211,7 @@ void MainWindow::on_save_a_clicked()
             // Effacer les champs après l'ajout réussi
             ui->budget_a->clear();
             ui->name_a->clear();
-            ui->adress_a_2->clear();
+            ui->adress_a->clear();
             ui->desc_a->clear();
 
             // Afficher les informations dans le tableau
@@ -263,25 +268,6 @@ void MainWindow::on_save_a_clicked()
 
 
 
-
-            void MainWindow::on_assupprimer_3_clicked()
-            {
-                ui->stackedWidgetAssociation->setCurrentIndex(0);
-            }
-
-            void MainWindow::on_clear_a_2_clicked()
-            {
-                ui->stackedWidgetAssociation->setCurrentIndex(0);
-            }
-
-            void MainWindow::on_assupprimer_2_clicked()
-            {
-                ui->stackedWidgetAssociation->setCurrentIndex(0);
-            }
-            void MainWindow::on_listas_clicked()
-            {
-                 ui->stackedWidgetAssociation->setCurrentIndex(0);
-            }
 
 void MainWindow::on_asupdate_clicked()
 {
@@ -448,7 +434,7 @@ void MainWindow::on_asPDF_clicked()
 void MainWindow::on_comboBox_10_currentIndexChanged(int index)
 {
     // Chemin d'accès vers votre script Python
-    QString pythonScriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/devise.py";
+    QString pythonScriptPath = "C:/Users/DELL/OneDrive/Bureau/devise.py";
 
     // Obtenir la valeur de budget de labelaffbudgetass
     QString budget = ui->labelaffbudgetass->text();
@@ -515,78 +501,54 @@ void MainWindow::on_comboBox_10_currentIndexChanged(int index)
 
 
 
+
 void MainWindow::on_supprimer_36_clicked()
 {
     QSqlQueryModel *model = new QSqlQueryModel();
-    model->setQuery("SELECT Type FROM ASSOCIATION");
+        model->setQuery("SELECT Type FROM ASSOCIATION");
 
-    int countPrivate = 0;
-    int countPublic = 0;
-    int countOther = 0;
+        int countMale = 0;
+        int countFemale = 0;
+        int countOther = 0;
 
-    for (int i = 0; i < model->rowCount(); ++i) {
-        QString type = model->record(i).value("Type").toString();
-        if (type == "Private") {
-            ++countPrivate;
-        } else if (type == "Public") {
-            ++countPublic;
-        } else {
-            ++countOther;
+        for (int i = 0; i < model->rowCount(); ++i) {
+            QString sexe = model->record(i).value("Type").toString();
+            if (sexe == "Private") {
+                ++countMale;
+            } else if (sexe == "Public") {
+                ++countFemale;
+            } else {
+                ++countOther;
+            }
         }
-    }
 
-    int total = countPrivate + countPublic + countOther;
+        int total = countMale + countFemale + countOther;
 
-    // Création du pixmap pour dessiner le pie chart
-    QSize pixmapSize(581, 371);
-    QPixmap pixmap(pixmapSize);
-    pixmap.fill(Qt::transparent); // Fond transparent
+        QPieSeries *series = new QPieSeries();
+        if (countMale != 0)
+            series->append("Private", countMale);
+        if (countFemale != 0)
+            series->append("Public", countFemale);
+        if (countOther != 0)
+            series->append("Other", countOther);
 
-    QPainter painter(&pixmap);
-    painter.setRenderHint(QPainter::Antialiasing);
+        for (QPieSlice *slice : series->slices()) {
+            QString label = slice->label();
+            double percentage = (slice->percentage() * 100.0);
+            slice->setLabel(QString("%1 %2%").arg(label).arg(percentage, 0, 'f', 1));
+            slice->setLabelVisible();
+        }
 
-    // Variables pour le dessin du pie chart
-    QRectF pieRect(10, 10, pixmapSize.width() - 220, pixmapSize.height() - 20);
-    qreal startAngle = 0.0;
+        QChart *chart = new QChart();
+        chart->addSeries(series);
+        chart->setTitle("Total " + QString::number(total));
 
-    // Dessiner chaque tranche du pie chart
-    QStringList labels;
-    QList<int> counts;
-    labels << "Private" << "Public" << "Other";
-    counts << countPrivate << countPublic << countOther;
+        QChartView *chartView = new QChartView(chart);
+        chartView->setRenderHint(QPainter::Antialiasing);
+        chartView->resize(1000, 500);
 
-    for (int i = 0; i < labels.size(); ++i) {
-        qreal sweepAngle = 360.0 * counts[i] / total;
-        QColor sliceColor = QColor::fromHsv((i * 30) % 360, 100, 200); // Couleur pastel pour chaque tranche
-        painter.setBrush(sliceColor); // Définir la couleur de la tranche
-        painter.drawPie(pieRect, startAngle * 16, sweepAngle * 16);
+        chart->legend()->hide();
+        chartView->show();
 
-        // Dessiner un carré de couleur à côté du pie chart
-        QRectF colorRect(pixmapSize.width() - 200, 20 + i * 30, 20, 20); // Position et taille du carré de couleur
-        painter.fillRect(colorRect, sliceColor);
-
-        // Afficher le label à côté du carré de couleur
-        QString label = labels[i];
-        QPointF labelPos = colorRect.topRight() + QPointF(30, 15); // Position pour afficher le label à côté du carré de couleur
-        painter.drawText(labelPos, label);
-
-        // Calcul du pourcentage
-        double percentage = (static_cast<double>(counts[i]) / total) * 100;
-        QString percentageText = QString::number(percentage, 'f', 1) + "%";
-
-        // Afficher le pourcentage à côté du carré de couleur
-        QPointF textPos = colorRect.topRight() + QPointF(130, 15); // Position pour afficher le texte à côté du carré de couleur
-        painter.drawText(textPos, percentageText);
-
-        startAngle += sweepAngle;
-    }
-
-    painter.end();
-
-    // Afficher le pixmap dans le QLabel
-    ui->label_statAssociation->setPixmap(pixmap);
-
-    // Affichage du graphique dans la page 4 de stackedWidgetAssociation
-    ui->stackedWidgetAssociation->setCurrentIndex(4);
 }
 

@@ -1,17 +1,9 @@
 QT += serialport
 QT += network
-QT += core gui charts
-QT += sql
+QT       += core gui charts
+QT       += sql
 QT += widgets printsupport
 QT += texttospeech
-QT += quick positioning
-QT += multimedia
-
-
-CONFIG += qtquickcompiler
-QT += quickcontrols2
-QT += quickwidgets
-
 greaterThan(QT_MAJOR_VERSION, 4):
 
 CONFIG += c++11
@@ -42,8 +34,7 @@ SOURCES += \
     participer.cpp \
     qr.cpp \
     qrcode.cpp \
-    smtp.cpp \
-    traduction.cpp
+    smtp.cpp
 
 HEADERS += \
     arduino.h \
@@ -72,8 +63,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 RESOURCES += \
-    images.qrc \
-    resources.qrc
+    images.qrc
 
 DISTFILES += \
     audio.py \

@@ -1,5 +1,6 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+
 #include <QMainWindow>
 #include <QPushButton>
 #include <QWidget>
@@ -10,6 +11,7 @@
 #include "article.h"
 #include "association.h"
 #include "participer.h"
+#include "arduino.h"
 #include<QSqlRecord>
 #include <QLabel>
 #include <QLineEdit>
@@ -42,7 +44,9 @@
 #include <QSqlError>
 #include <QTextToSpeech>
 #include "controller.h"
-#include "arduino.h"
+#include <QTimer>
+
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -51,7 +55,6 @@ QT_END_NAMESPACE
 // Classe pour gérer la reconnaissance vocale dans un thread séparé
 class SpeechRecognitionWorker : public QObject {
     Q_OBJECT
-
 public:
     explicit SpeechRecognitionWorker(QObject *parent = nullptr) : QObject(parent) {}
 
@@ -63,46 +66,46 @@ public slots:
 
         // Exécutez le code Python de reconnaissance vocale
         QString pythonCode = R"(
-import speech_recognition as sr
-import re
-import time
+                             import speech_recognition as sr
+                             import re
+                             import time
 
-# Fonction pour effectuer la reconnaissance vocale
-def recognize():
-    # Initialise le recognizer
-    recognizer = sr.Recognizer()
+                             # Fonction pour effectuer la reconnaissance vocale
+                             def recognize():
+                             # Initialise le recognizer
+                             recognizer = sr.Recognizer()
 
-    # Utilise le microphone comme source audio
-    with sr.Microphone() as source:
-        print("")
-        recognizer.adjust_for_ambient_noise(source)
+                             # Utilise le microphone comme source audio
+                             with sr.Microphone() as source:
+                             print("")
+                             recognizer.adjust_for_ambient_noise(source)
 
 
-        timeout = 5  # 5seconde
-        start_time = time.time()  # Heure de début
-        while (time.time() - start_time) <= timeout:
-            try:
-                audio_data = recognizer.listen(source, timeout=2)  # Attend jusqu'à 2 secondes
-                text = recognizer.recognize_google(audio_data, language='fr-FR')
-                print("", text)
+                             timeout = 5  # 5seconde
+                             start_time = time.time()  # Heure de début
+                             while (time.time() - start_time) <= timeout:
+                             try:
+                             audio_data = recognizer.listen(source, timeout=2)  # Attend jusqu'à 2 secondes
+                             text = recognizer.recognize_google(audio_data, language='fr-FR')
+                             print("", text)
 
-                # Si le texte contient "nom", imprimez-le
-                match = re.search(r'nom\s*:\s*([\w\s]+)', text, re.IGNORECASE)
-                if match:
-                    print("Nom reconnu:", match.group(1))
-                    break
+                             # Si le texte contient "nom", imprimez-le
+                             match = re.search(r'nom\s*:\s*([\w\s]+)', text, re.IGNORECASE)
+                             if match:
+                             print("Nom reconnu:", match.group(1))
+                             break
 
-            except sr.WaitTimeoutError:
-                pass
-            except sr.UnknownValueError:
-                print("Speech Recognition could not understand audio.")
-            except sr.RequestError as e:
-                print(f"Could not request results from Google Speech Recognition service; {e}")
-            time.sleep(2)  # Attendre 2 secondes entre chaque itération
+                             except sr.WaitTimeoutError:
+                             pass
+                             except sr.UnknownValueError:
+                             print("Speech Recognition could not understand audio.")
+                             except sr.RequestError as e:
+                             print(f"Could not request results from Google Speech Recognition service; {e}")
+                             time.sleep(2)  # Attendre 2 secondes entre chaque itération
 
-# Appel de la fonction de reconnaissance vocale
-recognize()
-)";
+                             # Appel de la fonction de reconnaissance vocale
+                             recognize()
+                             )";
         // Exécutez le code Python
         process->start("python", QStringList() << "-c" << pythonCode);
 
@@ -129,6 +132,11 @@ signals:
     void recognizedText(const QString &text);
 };
 
+
+
+
+
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -141,585 +149,597 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void selectButton(QPushButton *button);
-      void deselectButton(QPushButton *button);
-      void verifyPasswordStrength(const QString &password);
-
+    void deselectButton(QPushButton *button);
+    void verifyPasswordStrength(const QString &password);
 private slots:
-      void updateInfoText(QString info) ;
+    void on_AddEmployee_2_clicked();
 
-        void on_AddEmployee_2_clicked();
+    void on_pushButtonEmployee_clicked();
 
-        void on_pushButtonEmployee_clicked();
+    void on_statEmployee_clicked();
 
-        void on_statEmployee_clicked();
+    void on_supprimer_Employee_2_clicked();
+    void on_pushButton_upCin_clicked();
 
-        void on_supprimer_Employee_2_clicked();
+    void on_pushButton_downCin_clicked();
 
-        void on_pushButton_upCin_clicked();
+    void on_pushButton_upName_clicked();
 
-        void on_pushButton_downCin_clicked();
+    void on_pushButton_downName_clicked();
 
-        void on_pushButton_upName_clicked();
+    void on_pushButton_upLastname_clicked();
 
-        void on_pushButton_downName_clicked();
+    void on_pushButton_downLastname_clicked();
 
-        void on_pushButton_upLastname_clicked();
+    void on_pushButton_upAddress_clicked();
 
-        void on_pushButton_downLastname_clicked();
+    void on_pushButton_downAddress_clicked();
 
-        void on_pushButton_upAddress_clicked();
+    void on_pushButton_upFunction_clicked();
 
-        void on_pushButton_downAddress_clicked();
+    void on_pushButton_downFunction_clicked();
 
-        void on_pushButton_upFunction_clicked();
+    void on_pushButton_upMail_clicked();
 
-        void on_pushButton_downFunction_clicked();
+    void on_pushButton_downMail_clicked();
 
-        void on_pushButton_upMail_clicked();
+    void on_save_AddEmployee_clicked();
 
-        void on_pushButton_downMail_clicked();
 
-        void on_save_AddEmployee_clicked();
+    void on_tabEmployee_clicked(const QModelIndex &index);
 
-        void on_tabEmployee_clicked(const QModelIndex &index);
+    void on_supprimer_Employee_clicked();
 
-        void on_supprimer_Employee_clicked();
+    void on_pdfEmployee_clicked();
 
-        void on_pdfEmployee_clicked();
+    void on_updateEmployee_clicked();
 
-        void on_updateEmployee_clicked();
+    void on_save_updateEmployee_clicked();
 
-        void on_save_updateEmployee_clicked();
+    void on_searchTextBox_employee_textEdited(const QString &arg1);
 
-        void on_searchTextBox_employee_textEdited(const QString &arg1);
+    void on_pushButton_AddImageEmployee_clicked();
 
-        void on_pushButton_AddImageEmployee_clicked();
+    void on_pushButton_UpDateImageEmployee_clicked();
 
-        void on_pushButton_UpDateImageEmployee_clicked();
+    void on_pushButtonLogin_clicked();
 
-        void on_pushButtonLogin_clicked();
+    void on_pushButton_forgetPassword_clicked();
+    void on_Valider_button_clicked();
 
-        void on_pushButton_forgetPassword_clicked();
-        void on_Valider_button_clicked();
+    void on_pushButton_ValidNewPassword_clicked();
 
-        void on_pushButton_ValidNewPassword_clicked();
+    void on_checkBox_passwordLogin_stateChanged();
 
-        void on_checkBox_passwordLogin_stateChanged();
+    void on_checkBox_Newpassword_stateChanged();
 
-        void on_checkBox_Newpassword_stateChanged();
+    void on_checkBox_Confirmpassword_stateChanged();
 
-        void on_checkBox_Confirmpassword_stateChanged();
+    void on_checkBox_passwordSave_stateChanged();
 
-        void on_checkBox_passwordSave_stateChanged();
+    void on_logout_clicked();
 
-        void on_logout_clicked();
+    void on_clearEmployee_clicked();
+    //event
+    /* void on_pushButtonEvents_clicked();
+        void on_tableView_14_clicked(const QModelIndex &index);
 
-        void on_clearEmployee_clicked();
-        //event
+            void on_searchevent_textEdited(const QString &arg1);
 
-        void on_pushButtonEvents_clicked();
+            void on_ajouterArt_19_clicked();
 
-        void on_add_event_clicked();
+            void on_up_id_clicked();
 
-        void on_table_event_clicked(const QModelIndex &index);
+            void on_down_id_clicked();
 
-        void clearEventFields();
 
-        void clearEventdetailFields();
 
-        void on_clear_clicked();
+            void on_up_noun_clicked();
 
-        void calendarWidget();
+            void on_down_noun_clicked();
 
-        QVector<evenement> getEventsFromDatabase() ;
+            void on_up_location_clicked();
 
-        void clearEventHighlights();
+            void on_down_location_clicked();
 
-        void on_up_id_clicked();
+            void on_up_start_clicked();
 
-        void on_down_id_clicked();
+            void on_down_start_clicked();
 
-        void on_up_noun_clicked();
+            void on_up_end_clicked();
 
-        void on_down_noun_clicked();
+            void on_down_end_clicked();
 
-        void on_up_location_clicked();
+            void on_up_price_clicked();
 
-        void on_down_location_clicked();
+            void on_down_price_clicked();
+            void calendarWidget();
+            QVector<evenement> getEventsFromDatabase() ;
+            void clearEventHighlights();
+            void on_stat_clicked();
+            void highlightEventPeriod(const QDate &startDate, const QDate &endDate);
+            void on_calendarWidget_clicked(const QDate &date);
+            void executePythonScript(const QString &query);
+            void on_add_cal_clicked();
+            void on_supprimer_event_2_clicked();
+            QColor generateRandomColor();
+            void on_stat_2_clicked();
+            void getWeatherData(const QString& location);
+            void on_generateAffiche_clicked();
 
-        void on_up_start_clicked();
+            void on_weathergenerate_clicked();*/
 
-        void on_down_start_clicked();
 
-        void on_up_end_clicked();
+    void on_pushButtonEvents_clicked();
 
-        void on_down_end_clicked();
+    void on_add_event_clicked();
 
-        void on_up_price_clicked();
+    void on_table_event_clicked(const QModelIndex &index);
 
-        void on_down_price_clicked();
+    void clearEventFields();
 
-        void on_tout_supprimer_clicked();
+    void clearEventdetailFields();
 
-        void highlightEventPeriod(const QDate &startDate, const QDate &endDate);
+    void on_clear_clicked();
 
-        void on_add_cal_clicked();
+    void calendarWidget();
 
-        void on_supprimer_event_cal_clicked();
+    QVector<evenement> getEventsFromDatabase() ;
 
-        void on_generateAffiche_clicked();
+    void clearEventHighlights();
 
-        void executePythonScript(const QString &query);
+    void on_up_id_clicked();
 
-        QColor generateRandomColor();
+    void on_down_id_clicked();
 
-        void getWeatherData(const QString& location);
+    void on_up_noun_clicked();
 
-        void on_weathergenerate_clicked();
+    void on_down_noun_clicked();
 
-        void on_updateEvent_clicked();
+    void on_up_location_clicked();
 
-        void on_pdfevent_clicked();
+    void on_down_location_clicked();
 
-        void on_supprimer_event_clicked();
+    void on_up_start_clicked();
 
-        void on_list_clicked();
+    void on_down_start_clicked();
 
-        void on_saveup_clicked();
+    void on_up_end_clicked();
 
+    void on_down_end_clicked();
 
-        void on_calendar_event_clicked();
+    void on_up_price_clicked();
 
-        void on_calendarWidget_clicked(const QDate &date);
+    void on_down_price_clicked();
 
-        void on_stat_clicked();
+    void on_tout_supprimer_clicked();
 
-        void on_add_event_2_clicked();
+    void highlightEventPeriod(const QDate &startDate, const QDate &endDate);
 
-        void on_searchevent_textEdited(const QString &arg1);
+    void on_add_cal_clicked();
 
-        void on_pushButtonGuest_clicked();
+    void on_supprimer_event_cal_clicked();
 
-        void on_tableViewGuest_doubleClicked(const QModelIndex &index);
+    void on_generateAffiche_clicked();
 
-        void on_go_to_addGuest_clicked();
+    void executePythonScript(const QString &query);
 
-        void on_supprimer_Guest_clicked();
+    QColor generateRandomColor();
 
-        void on_go_to_updateGuest_clicked();
+    void getWeatherData(const QString& location);
 
-        void on_go_to_affSimple_from_addGuest_clicked();
+    void on_weathergenerate_clicked();
 
-        void on_go_to_addSimple_from_update_clicked();
+    void on_updateEvent_clicked();
 
-        void on_searchGuest_textEdited(const QString &arg1);
+    void on_pdfevent_clicked();
 
-        void on_go_to_listGuest_from_addGuest_clicked();
+    void on_supprimer_event_clicked();
 
-        void on_go_to_list_from_affSimple_clicked();
+    void on_list_clicked();
 
-        void on_go_to_listGuest_from_updateGuest_clicked();
+    void on_saveup_clicked();
 
-        void on_pdfGuest_clicked();
 
-        void on_rechercheCinCart_clicked();
+    void on_calendar_event_clicked();
 
-        void on_addImageGuest_clicked();
+    void on_calendarWidget_clicked(const QDate &date);
 
-        void on_updateImage_clicked();
+    void on_stat_clicked();
 
-        void on_supprimer_GuestSelect_clicked();
+    void on_add_event_2_clicked();
 
-        void on_statEmotion_clicked();
+    void on_searchevent_textEdited(const QString &arg1);
 
-        void on_tri_Ccin_clicked();
+    void on_pushButtonGuest_clicked();
 
-        void on_tri_Dcin_clicked();
+    void on_tableViewGuest_doubleClicked(const QModelIndex &index);
 
-        void on_tri_Cname_clicked();
+    void on_go_to_addGuest_clicked();
 
-        void on_tri_Dname_clicked();
+    void on_supprimer_Guest_clicked();
 
-        void on_tri_Cage_clicked();
+    void on_go_to_updateGuest_clicked();
 
-        void on_tri_Dage_clicked();
+    void on_go_to_affSimple_from_addGuest_clicked();
 
-        void on_tri_Cgender_clicked();
+    void on_go_to_addSimple_from_update_clicked();
 
-        void on_tri_Dgender_clicked();
+    void on_searchGuest_textEdited(const QString &arg1);
 
-        void on_tri_Caddress_clicked();
+    void on_go_to_listGuest_from_addGuest_clicked();
 
-        void on_tri_Daddress_clicked();
+    void on_go_to_list_from_affSimple_clicked();
 
-        void on_tri_Cphone_clicked();
+    void on_go_to_listGuest_from_updateGuest_clicked();
 
-        void on_tri_Dphone_clicked();
+    void on_pdfGuest_clicked();
 
-        void on_tri_Cemail_clicked();
+    void on_rechercheCinCart_clicked();
 
-        void on_tri_Demail_clicked();
+    void on_addImageGuest_clicked();
 
-        void on_surv_Guest_clicked();
+    void on_updateImage_clicked();
 
-        //partie article
-        void on_save_5_clicked();
-        void on_pushButtonProduct_clicked();
-        void on_listtoaddpro_clicked();
+    void on_supprimer_GuestSelect_clicked();
 
-                void on_pushButton_14_clicked();
+    void on_statEmotion_clicked();
 
-                    void on_ajouterArt_clicked();
-                    void on_lireai_clicked();
+    void on_tri_Ccin_clicked();
 
-                    void on_tableView_17_doubleClicked(const QModelIndex &index);
+    void on_tri_Dcin_clicked();
 
-                    void on_updateEmployee_5_clicked();
+    void on_tri_Cname_clicked();
 
-                    void on_tableView_6_doubleClicked(const QModelIndex &index);
+    void on_tri_Dname_clicked();
 
-                    void on_envoyer_clicked();
+    void on_tri_Cage_clicked();
 
-                    void on_chatbot_clicked();
+    void on_tri_Dage_clicked();
 
-                    void on_supprimer_25_clicked();
+    void on_tri_Cgender_clicked();
 
-                    void on_searchTextBox_19_textChanged(const QString &arg1);
+    void on_tri_Dgender_clicked();
 
-                    void on_pushButton_2_clicked();
+    void on_tri_Caddress_clicked();
 
-                    void on_supprimer_26_clicked();
+    void on_tri_Daddress_clicked();
 
-                    void on_triid1_clicked();
+    void on_tri_Cphone_clicked();
 
-                    void on_triid2_clicked();
+    void on_tri_Dphone_clicked();
 
-                    void on_triname1_clicked();
+    void on_tri_Cemail_clicked();
 
-                    void on_triname2_clicked();
+    void on_tri_Demail_clicked();
 
-                    void on_tridomaine1_clicked();
+    void on_surv_Guest_clicked();
 
-                    void on_tridomaine2_clicked();
 
-                    void on_suppgen_clicked();
 
-                    void on_tableView_4_doubleClicked(const QModelIndex &index);
 
-                    void on_del_all_clicked();
 
-                    void on_supprimer_4_clicked();
+    //partie article
+    void on_save_5_clicked();
+    void on_pushButtonProduct_clicked();
+    void on_listtoaddpro_clicked();
 
-                    void on_supprimer_24_clicked();
+    void on_pushButton_14_clicked();
 
-                    void on_liste_clicked();
+    void on_ajouterArt_clicked();
+    void on_lireai_clicked();
 
-                    void on_triid1_9_clicked();
+    void on_tableView_17_doubleClicked(const QModelIndex &index);
 
-                    void on_triid2_4_clicked();
+    void on_updateEmployee_5_clicked();
 
-                    void on_triid1_10_clicked();
+    void on_tableView_6_doubleClicked(const QModelIndex &index);
 
-                    void on_triid2_5_clicked();
+    void on_envoyer_clicked();
 
-                    void on_triid1_11_clicked();
+    void on_chatbot_clicked();
 
-                    void on_triid2_6_clicked();
+    void on_supprimer_25_clicked();
 
-                    void on_triid1_12_clicked();
+    void on_searchTextBox_19_textChanged(const QString &arg1);
 
-                    void on_triid2_7_clicked();
 
-                    void on_start_clicked();
+    void on_pushButton_2_clicked();
 
-                    void on_rating_clicked();
+    void on_supprimer_26_clicked();
 
-                    void on_pub_clicked();
 
-                    void on_supprimer_32_clicked();
 
-                    void on_gerervedio_clicked();
+    void on_triid1_clicked();
 
-                    //partie artist
-                    void on_ararriere_clicked();
-                       void on_ararriere_2_clicked();
-                       void on_ararriere_7_clicked();
-                       void on_ararriere_3_clicked();
-                       void on_aradd_clicked();
-                       void on_arupdate_clicked();
-                       void on_arsupp_clicked();
-                       void on_arajouter_clicked();
-                       void on_arclear_clicked();
-                       void on_artableView_2_doubleClicked(const QModelIndex &index);
-                       void on_arupdate_2_clicked();
-                       void on_arclear_2_clicked();
-                       void on_ardelete_clicked();
-                       void on_arsearchTextBox_textChanged(const QString &arg1);
+    void on_triid2_clicked();
 
-                        void on_artableView_3_doubleClicked(const QModelIndex &index);
-                        void on_arstat_clicked();
-                        void on_arpdf_clicked();
-                        void on_arassistant_clicked();
+    void on_triname1_clicked();
 
-                        //reconnaissance
-                        void on_reconnaissance_clicked();
-                        void on_reconnaissance_2_clicked();
-                        void on_reconnaissance_3_clicked();
-                        void on_reconnaissance_4_clicked();
-                        void on_reconnaissance_5_clicked();
-                        void on_reconnaissance_6_clicked();
-                        void on_reconnaissance_7_clicked();
-                        void on_reconnaissance_8_clicked();
+    void on_triname2_clicked();
 
-                        // Slot pour mettre à jour les champs avec le texte reconnu
-                        void updateNom(const QString &text);
-                        void updateCIN(const QString &text);
-                        void updatePrenom(const QString &text);
-                        void updateMail(const QString &text);
-                        void updateDescription(const QString &text);
-                        void updateTelephone(const QString &text);
-                        //void updateSexe(const QString &text);
-                        void updateAdresse(const QString &text);
-                        void updateDomaine(const QString &text);
+    void on_tridomaine1_clicked();
 
+    void on_tridomaine2_clicked();
 
-                        //--------scann par camera ---
-                        void on_scann_clicked();
-                        void on_scann_2_clicked();
-                        void on_scann_3_clicked();
-                        void on_scann_4_clicked();
-                        void on_scann_5_clicked();
-                        void on_scann_6_clicked();
-                        void on_scann_7_clicked();
-                        void on_scann_8_clicked();
+    void on_suppgen_clicked();
 
-                        // ------- mail--------
+    void on_tableView_4_doubleClicked(const QModelIndex &index);
 
+    void on_del_all_clicked();
 
-                        void on_artableView_doubleClicked(const QModelIndex &index);
+    void on_supprimer_4_clicked();
 
-                        void on_arpdf_3_clicked();
+    void on_supprimer_24_clicked();
 
-                        void on_arpicture_clicked();
+    void on_liste_clicked();
 
-                        void on_arpicture_2_clicked();
+    void on_triid1_9_clicked();
 
+    void on_triid2_4_clicked();
 
+    void on_triid1_10_clicked();
 
-                        void on_checkBox_stateChanged(int arg1);
+    void on_triid2_5_clicked();
 
+    void on_triid1_11_clicked();
 
-                    //------ TRIE------
-                        void on_desc_1_clicked();
-                        void on_asc_1_clicked();
-                        void on_desc_2_clicked();
-                        void on_asc_2_clicked();
-                        void on_desc_3_clicked();
-                        void on_asc_3_clicked();
-                        void on_desc_4_clicked();
-                        void on_asc_4_clicked();
-                        void on_desc_5_clicked();
-                        void on_asc_5_clicked();
-                        void on_desc_6_clicked();
-                        void on_asc_6_clicked();
-                        void on_desc_7_clicked();
-                        void on_asc_7_clicked();
+    void on_triid2_6_clicked();
 
-                        void on_pushButtonArtist_clicked();
+    void on_triid1_12_clicked();
 
+    void on_triid2_7_clicked();
 
+    void on_start_clicked();
 
+    void on_rating_clicked();
 
+    void on_pub_clicked();
 
-                //association
-                        void on_save_a_clicked();
+    void on_supprimer_32_clicked();
 
+    void on_gerervedio_clicked();
 
-                        void on_tableView_23_doubleClicked(const QModelIndex &index);
 
 
-                        void on_asupdate_clicked();
 
-                        void on_supprimer_23_clicked();
 
-                        void on_save_4_clicked();
 
-                        void on_searchTextBox_21_textChanged(const QString &arg1);
 
-                        void on_searchTextBox_18_textChanged(const QString &arg1);
+    //partie artist
+    void on_ararriere_clicked();
+    void on_ararriere_2_clicked();
+    void on_ararriere_7_clicked();
+    void on_ararriere_3_clicked();
+    void on_aradd_clicked();
+    void on_arupdate_clicked();
+    void on_arsupp_clicked();
+    void on_arajouter_clicked();
+    void on_arclear_clicked();
+    void on_artableView_2_doubleClicked(const QModelIndex &index);
+    void on_arupdate_2_clicked();
+    void on_arclear_2_clicked();
+    void on_ardelete_clicked();
+    void on_arsearchTextBox_textChanged(const QString &arg1);
 
 
-                        void on_comboBox_4_activated(const QString &arg1);
 
-                        void on_tableView_22_doubleClicked(const QModelIndex &index);
+    void on_artableView_3_doubleClicked(const QModelIndex &index);
+    void on_arstat_clicked();
+    void on_arpdf_clicked();
+    void on_arassistant_clicked();
 
-                        void on_assupprimer_clicked();
 
-                        //void on_supprimer_31_clicked();
 
-                        void on_asPDF_clicked();
 
-                        void on_comboBox_10_currentIndexChanged(int index);
+    //reconnaissance
+    void on_reconnaissance_clicked();
+    void on_reconnaissance_2_clicked();
+    void on_reconnaissance_3_clicked();
+    void on_reconnaissance_4_clicked();
+    void on_reconnaissance_5_clicked();
+    void on_reconnaissance_6_clicked();
+    void on_reconnaissance_7_clicked();
+    void on_reconnaissance_8_clicked();
 
 
-                        void on_listtoaddass_clicked();
 
 
-                        void on_supprimer_36_clicked();
 
 
 
+    // Slot pour mettre à jour les champs avec le texte reconnu
+    void updateNom(const QString &text);
+    void updateCIN(const QString &text);
+    void updatePrenom(const QString &text);
+    void updateMail(const QString &text);
+    void updateDescription(const QString &text);
+    void updateTelephone(const QString &text);
+    //void updateSexe(const QString &text);
+    void updateAdresse(const QString &text);
+    void updateDomaine(const QString &text);
 
-                        void on_pushButtonAssociation_clicked();
 
-                        void on_go_to_participer_clicked();
 
 
-                        void on_supprimeParSelectionParticiper_clicked();
 
-                        void on_go_to_participer_2_clicked();
+    //--------scann par camera ---
+    void on_scann_clicked();
+    void on_scann_2_clicked();
+    void on_scann_3_clicked();
+    void on_scann_4_clicked();
+    void on_scann_5_clicked();
+    void on_scann_6_clicked();
+    void on_scann_7_clicked();
+    void on_scann_8_clicked();
 
-                        void on_updateEmployee_3_clicked();
+    // ------- mail--------
 
-                        void on_go_to_participer_3_clicked();
 
-                        void on_updateEmployee_2_clicked();
+    void on_artableView_doubleClicked(const QModelIndex &index);
 
-                        void on_updateEmployee_8_clicked();
+    void on_arpdf_3_clicked();
 
-                        void on_updateEmployee_7_clicked();
+    void on_arpicture_clicked();
 
-                        void on_updateEmployee_6_clicked();
+    void on_arpicture_2_clicked();
 
-                        void on_add_cal_4_clicked();
 
-                        void on_add_cal_3_clicked();
 
-                        void on_add_cal_2_clicked();
+    void on_checkBox_stateChanged(int arg1);
 
-                        void on_add_cal_5_clicked();
 
-                        void on_add_cal_6_clicked();
 
-                        void on_liste_2_clicked();
 
-                        void on_liste_3_clicked();
 
-                        void on_liste_4_clicked();
+    //------ TRIE------
+    void on_desc_1_clicked();
+    void on_asc_1_clicked();
+    void on_desc_2_clicked();
+    void on_asc_2_clicked();
+    void on_desc_3_clicked();
+    void on_asc_3_clicked();
+    void on_desc_4_clicked();
+    void on_asc_4_clicked();
+    void on_desc_5_clicked();
+    void on_asc_5_clicked();
+    void on_desc_6_clicked();
+    void on_asc_6_clicked();
+    void on_desc_7_clicked();
+    void on_asc_7_clicked();
 
-                        void on_liste_5_clicked();
 
-                        void on_assupprimer_3_clicked();
 
-                        void on_clear_a_2_clicked();
 
-                        void on_assupprimer_2_clicked();
 
-                        void on_rating_2_clicked();
 
 
-                        void on_listart_clicked();
 
-                        void on_liststat_clicked();
 
-                        void on_listas_clicked();
 
 
-                        void verifyRFID();
+    void on_pushButtonArtist_clicked();
 
-                        void on_confirmer_clicked();
 
-                        void on_up_clicked();
 
 
-                        void executePythonScript1(const QString &change);
-                        void on_down_clicked();
 
+    //association
+    void on_save_a_clicked();
 
 
+    void on_tableView_23_doubleClicked(const QModelIndex &index);
 
-                        void on_pushButton_clicked();
 
-                        void update_label();   // slot permettant la mise à jour du label état de la lampe 1,
-                        void on_on_clicked();
+    void on_asupdate_clicked();
 
-                        void on_off_clicked();
+    void on_supprimer_23_clicked();
 
-                        void on_logout_7_clicked();
-                        void on_arsexe_3_currentIndexChanged(int index);
+    void on_save_4_clicked();
 
+    void on_searchTextBox_21_textChanged(const QString &arg1);
+
+    void on_searchTextBox_18_textChanged(const QString &arg1);
+
+
+    void on_comboBox_4_activated(const QString &arg1);
+
+    void on_tableView_22_doubleClicked(const QModelIndex &index);
+
+    void on_assupprimer_clicked();
+
+    //void on_supprimer_31_clicked();
+
+    void on_asPDF_clicked();
+
+    void on_comboBox_10_currentIndexChanged(int index);
+
+
+    void on_listtoaddass_clicked();
+
+
+    void on_supprimer_36_clicked();
+
+
+
+
+    void on_pushButtonAssociation_clicked();
+
+    void on_go_to_participer_clicked();
+
+
+    void on_supprimeParSelectionParticiper_clicked();
+
+    void on_go_to_participer_2_clicked();
+
+    void on_updateEmployee_3_clicked();
+
+    void on_go_to_participer_3_clicked();
+
+
+    //arduino
+    void update_label();   // slot permettant la mise à jour du label état de la lampe 1,
 
 
 private:
-                        //arduinoooo
-       QByteArray data,dataw; // variable contenant les données reçues
+    //guest
+    Guest g;
+    Participer p;
+    QString imagePath;
+    Artiste a;
+    int cinn;
+    QThread *thread;
+    SpeechRecognitionWorker *worker;
+    QPixmap imagePixmap;
+    QString selectedImagePath; // Déclaration de selectedImagePath comme membre privé de la classe
+    QString selectedImagePathu; // Définir une variable globale pour stocker le chemin de l'image sélectionnée update
 
-        Arduino A; // objet temporaire
-        int nbrvue;
-        bool safe;
-        //guest
-        Guest g;
-        Participer p;
-        QString imagePath;
-        Artiste a;
-        int cinn;
-        QThread *thread;
-        SpeechRecognitionWorker *worker;
-        QPixmap imagePixmap;
-        QString selectedImagePath; // Déclaration de selectedImagePath comme membre privé de la classe
-        QString selectedImagePathu; // Définir une variable globale pour stocker le chemin de l'image sélectionnée update
-
-        //
+    //
     Ui::MainWindow *ui;
     QDialog *dialog;
-        QLabel *label_1;
-        QLineEdit *lineEdit ;
-        int *code;
-        int *failedAttempts;
-        QString mail;
-        employee emp;
-        int id;
-        Association as;
+    QLabel *label_1;
+    QLineEdit *lineEdit ;
+    int *code;
+    int *failedAttempts;
+    QString mail;
+    employee emp;
+    int id;
+    Association as;
 
-        //event
-        evenement e;
-        QNetworkAccessManager *manager;
-        QProcess *process;
-        QStringList artistCINs; // Liste pour stocker les CINs d'artistes
-        //Arduino A;
+    //event
+    evenement e;
+    QNetworkAccessManager *manager;
+    QProcess *process;
+    QStringList artistCINs; // Liste pour stocker les CINs d'artistes
 
-        //article
-        void  executePythonScript(const QString &scriptPath, const QStringList &arguments);
-        void executePythonChatBot(const QString &userText);
-        void handlePythonError();
-        void chargerCINsArtistes();
-        void handleChatBotResponse();
-        Article article;
-        QSqlQueryModel *model; // Model for your QTableView
-        QTextToSpeech *speech;
+    //article
+    void  executePythonScript(const QString &scriptPath, const QStringList &arguments);
+    void executePythonChatBot(const QString &userText);
+    void handlePythonError();
+    void chargerCINsArtistes();
+    void handleChatBotResponse();
+    Article article;
+    QSqlQueryModel *model; // Model for your QTableView
+    QTextToSpeech *speech;
 
-        int idA;
+    int idA;
 
-        void setCenter(QVariant, QVariant);
-        void addMarker(QVariant lat, QVariant lng);
-
-        void updateOutput();
-        void handleError();
+    void setCenter(QVariant, QVariant);
+    void addMarker(QVariant lat, QVariant lng);
 
 
-        //void fetchArtistCINs();
-            void updateArtistComboBox();
+    //void fetchArtistCINs();
+    void updateArtistComboBox();
 
-            void updateLineEditWithVoice();
+    void updateLineEditWithVoice();
 
     void changeChatIcon(int rating);
 
-    void infoTextChanged(QString info);
-
-    //neeeeeeeeeeeeeeeeeeeeewwwwwwwwwwwwww
-    void displayMostViewedArticleName() ;
-    void sendArticleNameToArduino(const QString &name) ;
-
+    //arduino
+    QByteArray data; // variable contenant les données reçues
+    bool safe;
+    Arduino A; // objet temporaire
+    int count;
 
 };
 #endif // MAINWINDOW_H

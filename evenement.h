@@ -17,7 +17,7 @@ private:
     QTime start_h,end_h;
     float price_tick;
     QByteArray affiche;
-    QString RFID;
+
 
 public:
     //getters
@@ -55,9 +55,6 @@ public:
     QSqlQueryModel * afficherEvenement();
     evenement();
     evenement(int,int,QString,QString,QString,QDate,QDate,QTime,QTime,float);
-    evenement(int,int,QString,QString,QString,QDate,QDate,QTime,QTime,float,QString);
-    int rechercherRFID(QString rfid);
-
     evenement(int,QString);
     bool supprimerEvenement(QString event_noun);
     bool modifierEvenement();
@@ -77,7 +74,6 @@ public:
     QSqlQueryModel* afficher_tri_price_ascendant();
     void afficherPieChart(QLabel *label);
     bool ajouterImage(int id);
-    void updateEventComboBox(QComboBox *comboBox);
 
 
 };

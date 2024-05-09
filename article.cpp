@@ -156,6 +156,31 @@ bool Article::modifier(int id_article, const QString &domaine, const QString &no
 
     return query.exec();
 }
+
+bool Article::modifierNbVu(int id_article,int nbvu) {
+    QSqlQuery query;
+    query.prepare("UPDATE ARTICLE SET nbvu =:nbvu WHERE id_article = :id_article");
+    query.bindValue(":id_article", id_article);
+
+    query.bindValue(":nbvu", nbvu);
+
+    return query.exec();
+}
+
+int Article::getNbVuById(int id_article) {
+    QSqlQuery query;
+    query.prepare("SELECT nbvu FROM ARTICLE WHERE id_article = :id_article");
+    query.bindValue(":id_article", id_article);
+
+    if(query.exec() && query.next()) {
+        return query.value(0).toInt();
+    } else {
+        // Gérer les erreurs ici, par exemple :
+        qDebug() << "Erreur lors de la récupération du nombre de vues pour l'article" << id_article << ":" << query.lastError().text();
+        return -1; // Valeur par défaut en cas d'erreur
+    }
+}
+
 /*
 
 QSqlQueryModel* Article::afficherTriId() {
@@ -301,38 +326,13 @@ selectButton(ui->pushButtonProduct);
 deselectButton(ui->pushButtonGuest);
 deselectButton(ui->pushButtonArtist);
 deselectButton(ui->pushButtonAssociation);
-//deselectButton(ui->pushButtonSetting);
+deselectButton(ui->pushButtonSetting);
 ui->tableView_17->setModel(article.afficher());
 ui->tableView_6->setModel(article.afficher());
 }
 
-void MainWindow::on_liste_2_clicked()
-{
-    ui->stackedWidgetProduct->setCurrentIndex(0);
-}
 
-void MainWindow::on_liste_3_clicked()
-{
-    ui->stackedWidgetProduct->setCurrentIndex(0);
-}
 
-void MainWindow::on_liste_4_clicked()
-{
-    ui->stackedWidgetProduct->setCurrentIndex(0);
-}
-
-void MainWindow::on_liste_5_clicked()
-{
-    ui->stackedWidgetProduct->setCurrentIndex(0);
-}
-void MainWindow::on_rating_2_clicked()
-{
-     ui->stackedWidgetProduct->setCurrentIndex(0);
-}
-void MainWindow::on_liststat_clicked()
-{
-    ui->stackedWidgetProduct->setCurrentIndex(0);
-}
 void MainWindow::on_pushButton_14_clicked()
 {
 
@@ -424,6 +424,11 @@ if (success) {
 
 
 
+
+
+
+
+
 // ###########################"lire description ai #####################################
 
 // laission entre py et c++
@@ -452,7 +457,7 @@ void MainWindow::on_lireai_clicked()
    QString description = ui->textEdit_description->toPlainText();
 
    // Spécifier le chemin du script Python et les arguments (si nécessaire)
-   QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/audio.py";
+   QString scriptPath = "C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\audio.py";
    QStringList arguments;
    arguments << description; // Ajouter le contenu du QTextBrowser comme argument
 
@@ -622,6 +627,7 @@ if (success) {
 
 void MainWindow::on_tableView_6_doubleClicked(const QModelIndex &index)
 {
+
 int row = index.row();
    idA = ui->tableView_6->model()->index(row, 0).data().toInt();
    qDebug() << "iDa selected: " << idA;
@@ -668,6 +674,7 @@ int nbvuu = index.sibling(index.row(), nbvu).data().toInt();
  ui->lineEdit_prix->setText(QString::number(price));
  ui->textEdit_description->setText(description);
  ui->nbvu->setText(QString::number(nbvuu));
+ A.write_to_arduino("O"); //envoyer 1 à arduino
 
  QPixmap image(imagePath);
          if (!image.isNull()) {
@@ -874,7 +881,7 @@ QString fileName = QFileDialog::getSaveFileName(nullptr, "Save PDF", ui->lineEdi
   // Draw border around the page
   painter.drawRect(0, 0, printer.width(), printer.height());
 
-  QPixmap logo("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/logo app.png");
+  QPixmap logo("C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\logo app.png");
   if (!logo.isNull()) {
       int logoWidth = 200; // Adjust logo width as needed
       int logoHeight = 100; // Adjust logo height as needed
@@ -1162,6 +1169,7 @@ QByteArray text = process->readAllStandardOutput();
 ui->descriptionInput_3->setText(QString(text).trimmed());
 }
 
+
 void MainWindow::on_rating_clicked()
 {
 bool ok;
@@ -1174,9 +1182,9 @@ bool ok;
 void MainWindow::changeChatIcon(int rating) {
 QMovie *movie;
   if (rating <= 5) {
-      movie = new QMovie("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/giphy1.gif");
+      movie = new QMovie("C://Users//asus//Desktop//pythoniyedqt//giphy1.gif");
   } else {
-      movie = new QMovie("C:/Users/meddh/Desktop/noblePalette/noblePalette/images/tata.gif");
+      movie = new QMovie("C:\\Users\\Emna Nkhili\\Desktop\\noblePalette\\noblePalette\\images\\tata.gif");
   }
   ui->label_product_3->setMovie(movie);
   movie->start();
@@ -1196,9 +1204,9 @@ for (int row = 0; row < model->rowCount(); ++row) {
 }
 
 // Chemins des fichiers et des ressources
-QString inputVideoPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/pub/test.mp4";
-   QString outputVideoPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/pub/output_video.mp4";
-   QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/pub/Pub.py";
+QString inputVideoPath = "C:/Users/Emna Nkhili/Desktop/noblePalette/noblePalette/script/article/pub/test.mp4";
+   QString outputVideoPath = "C:/Users/Emna Nkhili/Desktop/noblePalette/noblePalette/script/article/pub/output_video.mp4";
+   QString scriptPath = "C:/Users/Emna Nkhili/Desktop/noblePalette/noblePalette/script/article/pub/Pub.py";
 
 // Prépare et lance le script Python
 QProcess *process = new QProcess(this);
@@ -1215,77 +1223,60 @@ QString scriptError = process->readAllStandardError();
 qDebug() << "Python Output:" << scriptOutput;
 qDebug() << "Python Error:" << scriptError;
 }
+
 void MainWindow::on_supprimer_32_clicked()
 {
-    qDebug() << "Button clicked";
+qDebug() << "Button clicked";
+   QSqlQueryModel *model = new QSqlQueryModel();
+   model->setQuery("SELECT poids_article FROM ARTICLE"); // Remplacer 'Articles' par le nom de votre table
 
-       QSqlQueryModel *model = new QSqlQueryModel();
-       model->setQuery("SELECT poids_article FROM ARTICLE");
+   // Définir les tranches de poids
+   QMap<QString, int> weightCategories;
+   weightCategories["0-500g"] = 0;
+   weightCategories["501-1000g"] = 0;
+   weightCategories["1001-1500g"] = 0;
+   // Ajoutez plus de catégories si nécessaire
 
-       QMap<QString, int> weightCategories;
-       weightCategories["0-500g"] = 0;
-       weightCategories["501-1000g"] = 0;
-       weightCategories["1001-1500g"] = 0;
-       // Ajoutez plus de catégories si nécessaire
+   // Compter les articles dans chaque catégorie
+   for (int i = 0; i < model->rowCount(); ++i) {
+       int weight = model->record(i).value("poids_article").toInt();
+       if (weight <= 500) {
+           weightCategories["0-500g"]++;
+       } else if (weight <= 1000) {
+           weightCategories["501-1000g"]++;
+       } else if (weight <= 1500) {
+           weightCategories["1001-1500g"]++;
+       } // Ajoutez plus de conditions pour d'autres catégories
+   }
 
-       for (int i = 0; i < model->rowCount(); ++i) {
-           int weight = model->record(i).value("poids_article").toInt();
-           if (weight <= 500) {
-               weightCategories["0-500g"]++;
-           } else if (weight <= 1000) {
-               weightCategories["501-1000g"]++;
-           } else if (weight <= 1500) {
-               weightCategories["1001-1500g"]++;
-           } // Ajoutez plus de conditions pour d'autres catégories
-       }
+   // Créer la série pour le graphique
+   QPieSeries *series = new QPieSeries();
+   for(auto &category : weightCategories.keys()) {
+       if (weightCategories[category] > 0)
+           series->append(category, weightCategories[category]);
+   }
 
-    // Création du pixmap pour dessiner le pie chart
-    QSize pixmapSize(581, 371);
-    QPixmap pixmap(pixmapSize);
-    pixmap.fill(Qt::transparent); // Fond transparent
+   // Configurer les labels des portions
+   for (QPieSlice *slice : series->slices()) {
+       double percentage = (slice->percentage() * 100.0);
+       slice->setLabel(QString("%1 %2%").arg(slice->label()).arg(percentage, 0, 'f', 1));
+       slice->setLabelVisible();
+   }
 
-    QPainter painter(&pixmap);
-    painter.setRenderHint(QPainter::Antialiasing);
+   // Configurer et afficher le graphique
+   QChart *chart = new QChart();
+   chart->addSeries(series);
+   chart->setTitle("Répartition des Articles par Poids");
 
-    // Variables pour le dessin du pie chart
-    QRectF pieRect(10, 10, pixmapSize.width() - 220, pixmapSize.height() - 20);
-    qreal startAngle = 0.0;
+   QChartView *chartView = new QChartView(chart);
+   chartView->setRenderHint(QPainter::Antialiasing);
+   chartView->resize(1000, 500);
 
-    // Dessiner chaque tranche du pie chart
-    for (auto it = weightCategories.constBegin(); it != weightCategories.constEnd(); ++it) {
-        qreal sweepAngle = 360.0 * it.value() / std::accumulate(weightCategories.constBegin(), weightCategories.constEnd(), 0);
-        QColor sliceColor = QColor::fromHsv((std::distance(weightCategories.constBegin(), it) * 30) % 360, 100, 200); // Couleur pastel pour chaque tranche
-        painter.setBrush(sliceColor); // Définir la couleur de la tranche
-        painter.drawPie(pieRect, startAngle * 16, sweepAngle * 16);
-
-        // Dessiner un carré de couleur à côté du pie chart
-        QRectF colorRect(pixmapSize.width() - 200, 20 + std::distance(weightCategories.constBegin(), it) * 30, 20, 20); // Position et taille du carré de couleur
-        painter.fillRect(colorRect, sliceColor);
-
-        // Afficher la catégorie à côté du carré de couleur
-        QString categoryLabel = it.key();
-        QPointF categoryPos = colorRect.topRight() + QPointF(30, 15); // Position pour afficher la catégorie à côté du carré de couleur
-        painter.drawText(categoryPos, categoryLabel);
-
-        // Calcul du pourcentage
-        double percentage = (static_cast<double>(it.value()) / std::accumulate(weightCategories.constBegin(), weightCategories.constEnd(), 0)) * 100;
-        QString percentageText = QString::number(percentage, 'f', 1) + "%";
-
-        // Afficher le pourcentage à côté du carré de couleur
-        QPointF textPos = colorRect.topRight() + QPointF(130, 15); // Position pour afficher le texte à côté du carré de couleur
-        painter.drawText(textPos, percentageText);
-
-        startAngle += sweepAngle;
-    }
-
-    painter.end();
-    ui->stackedWidgetProduct->setCurrentIndex(7);
-    ui->label_statProduct->setPixmap(pixmap);
+   chart->legend()->hide();
+   chartView->show();
 
 
 }
-
-
 
 //################################################## vedio languedesigne ##########################################
 
@@ -1297,7 +1288,7 @@ QString description = ui->textEdit_description->toPlainText();
      QProcess *process = new QProcess(this);
 
      // Chemin vers votre script Python
-     QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/vedio1.py";
+     QString scriptPath = "C:/Users/Emna Nkhili/Desktop/noblePalette/noblePalette/script/article/vedio1.py";
 
      // Lancement du script Python avec le texte comme argument
      process->start("python", QStringList() << scriptPath << description);
@@ -1327,42 +1318,8 @@ QString description = ui->textEdit_description->toPlainText();
 
 
 
-void MainWindow::executePythonScript1(const QString &change)
-{
-    // Spécifiez le chemin du script Python
-    QString scriptPath = "C:/Users/meddh/Desktop/noblePalette/noblePalette/script/article/sonB.py";
 
-    // Créez un processus pour exécuter le script Python
-    QProcess process;
 
-    // Exécutez le script Python avec l'argument spécifié (up ou down)
-    process.start("python", QStringList() << scriptPath << change);
-
-    // Attendre que le processus se termine
-    process.waitForFinished();
-
-    // Lisez la sortie standard du processus (si nécessaire)
-    qDebug() << QString(process.readAllStandardOutput());
-}
-
-void MainWindow::on_up_clicked()
-{
-    executePythonScript1("up");
-
-}
-
-void MainWindow::on_down_clicked()
-{
-    executePythonScript1("down");
-
-}
-bool Article::updateNbVu(int id_article, int newNbVu) {
-    QSqlQuery query;
-    query.prepare("UPDATE ARTICLE SET nbvu = :nbvu WHERE id_article = :id");
-    query.bindValue(":nbvu", newNbVu);
-    query.bindValue(":id", id_article);
-    return query.exec();
-}
 
 
 

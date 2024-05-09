@@ -84,7 +84,7 @@ border-radius: 40px;
 </string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="page_3">
          <widget class="QWidget" name="widget_24" native="true">
@@ -1254,7 +1254,7 @@ background-color: none;</string>
 </string>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="page_15">
            <property name="styleSheet">
@@ -7128,7 +7128,7 @@ background: url(:/images/images/back.png);
          <string notr="true">background:transparent;</string>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="accueil">
          <property name="styleSheet">
@@ -13917,7 +13917,7 @@ background: url(:/images/images/back.png);
        <widget class="QStackedWidget" name="stackedWidgetAssociation">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>-30</x>
           <y>50</y>
           <width>971</width>
           <height>671</height>
@@ -13928,7 +13928,7 @@ background: url(:/images/images/back.png);
 </string>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="page_11">
          <property name="styleSheet">
@@ -13999,7 +13999,7 @@ background: rgba(0, 0, 0, 0.0);
            <rect>
             <x>140</x>
             <y>180</y>
-            <width>161</width>
+            <width>121</width>
             <height>34</height>
            </rect>
           </property>
@@ -14024,9 +14024,9 @@ background: rgba(0, 0, 0, 0.0);
          <widget class="QLabel" name="label_cinGuest_7">
           <property name="geometry">
            <rect>
-            <x>280</x>
+            <x>250</x>
             <y>180</y>
-            <width>191</width>
+            <width>131</width>
             <height>34</height>
            </rect>
           </property>
@@ -14051,9 +14051,9 @@ background: rgba(0, 0, 0, 0.0);
          <widget class="QLabel" name="label_cinGuest_8">
           <property name="geometry">
            <rect>
-            <x>450</x>
+            <x>370</x>
             <y>180</y>
-            <width>201</width>
+            <width>141</width>
             <height>34</height>
            </rect>
           </property>
@@ -14078,9 +14078,9 @@ background: rgba(0, 0, 0, 0.0);
          <widget class="QLabel" name="label_cinGuest_9">
           <property name="geometry">
            <rect>
-            <x>630</x>
+            <x>500</x>
             <y>180</y>
-            <width>200</width>
+            <width>181</width>
             <height>34</height>
            </rect>
           </property>
@@ -14444,73 +14444,12 @@ border: 2px solid #669B37;
            <enum>Qt::Horizontal</enum>
           </property>
          </widget>
-         <widget class="QPushButton" name="supprimer_30">
-          <property name="geometry">
-           <rect>
-            <x>800</x>
-            <y>500</y>
-            <width>51</width>
-            <height>61</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton{/* Rectangle 9 */
-
-position: absolute;
-width: 1200px;
-height: 649px;
-
-background: #A9E4A4;
-border: none;
-
-/* Events */
-
-position: absolute;
-width: 63px;
-height: 32px;
-
-font-family: 'Athiti';
-font-style: normal;
-font-weight: 700;
-font-size: 20px;
-line-height: 32px;
-/* identical to box height */
-text-align: center;
-
-color: #2A501F;
-border-radius:15px;
-border-bottom:3px solid #669B37;
-}
-
-QPushButton:hover{
-position: absolute;
-width: 185px;
-height: 56px;
-
-background: #8BD086;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="resources.qrc">
-            <normaloff>:/images/images/pdf.png</normaloff>:/images/images/pdf.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>30</width>
-            <height>30</height>
-           </size>
-          </property>
-         </widget>
          <widget class="QTableView" name="tableView_22">
           <property name="geometry">
            <rect>
             <x>140</x>
             <y>210</y>
-            <width>691</width>
+            <width>641</width>
             <height>281</height>
            </rect>
           </property>
@@ -14646,6 +14585,33 @@ box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
            </size>
           </property>
          </widget>
+         <widget class="QLabel" name="label_cinGuest_14">
+          <property name="geometry">
+           <rect>
+            <x>650</x>
+            <y>180</y>
+            <width>131</width>
+            <height>34</height>
+           </rect>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>10</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">
+	color:white;
+	background:#11110E;
+	border-radius:15px;
+</string>
+          </property>
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="page_12">
          <property name="styleSheet">
@@ -14671,8 +14637,8 @@ border-radius: 40px;}</string>
           <widget class="QLineEdit" name="budget_a">
            <property name="geometry">
             <rect>
-             <x>350</x>
-             <y>250</y>
+             <x>150</x>
+             <y>230</y>
              <width>231</width>
              <height>31</height>
             </rect>
@@ -14691,8 +14657,8 @@ border-bottom:3px solid #669B37;
           <widget class="QLineEdit" name="name_a">
            <property name="geometry">
             <rect>
-             <x>350</x>
-             <y>100</y>
+             <x>150</x>
+             <y>90</y>
              <width>231</width>
              <height>31</height>
             </rect>
@@ -14720,8 +14686,8 @@ border-bottom:3px solid #669B37;
           <widget class="QLineEdit" name="adress_a">
            <property name="geometry">
             <rect>
-             <x>350</x>
-             <y>170</y>
+             <x>620</x>
+             <y>380</y>
              <width>231</width>
              <height>31</height>
             </rect>
@@ -14740,9 +14706,9 @@ border-bottom:3px solid #669B37;
           <widget class="QLineEdit" name="desc_a">
            <property name="geometry">
             <rect>
-             <x>350</x>
-             <y>310</y>
-             <width>231</width>
+             <x>40</x>
+             <y>340</y>
+             <width>191</width>
              <height>111</height>
             </rect>
            </property>
@@ -14882,7 +14848,7 @@ box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
           <widget class="QLabel" name="label_171">
            <property name="geometry">
             <rect>
-             <x>210</x>
+             <x>40</x>
              <y>100</y>
              <width>101</width>
              <height>21</height>
@@ -14897,13 +14863,13 @@ font-size: 20px;
 background-color: none;</string>
            </property>
            <property name="text">
-            <string>Name</string>
+            <string>Name :</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_173">
            <property name="geometry">
             <rect>
-             <x>210</x>
+             <x>40</x>
              <y>170</y>
              <width>101</width>
              <height>21</height>
@@ -14918,14 +14884,14 @@ font-size: 20px;
 background-color: none;</string>
            </property>
            <property name="text">
-            <string>Address</string>
+            <string>Address :</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_176">
            <property name="geometry">
             <rect>
-             <x>210</x>
-             <y>250</y>
+             <x>40</x>
+             <y>240</y>
              <width>101</width>
              <height>21</height>
             </rect>
@@ -14939,7 +14905,7 @@ font-size: 20px;
 background-color: none;</string>
            </property>
            <property name="text">
-            <string>Budget</string>
+            <string>Budget :</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_178">
@@ -15047,8 +15013,8 @@ border: 2px solid #669B37;
           <widget class="QLabel" name="label_177">
            <property name="geometry">
             <rect>
-             <x>210</x>
-             <y>380</y>
+             <x>50</x>
+             <y>310</y>
              <width>131</width>
              <height>21</height>
             </rect>
@@ -15062,7 +15028,237 @@ font-size: 20px;
 background-color: none;</string>
            </property>
            <property name="text">
-            <string>Description</string>
+            <string>Description :</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="radioButton">
+           <property name="geometry">
+            <rect>
+             <x>490</x>
+             <y>370</y>
+             <width>91</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton {
+    color: black; /* Couleur du texte */
+    font-family: &quot;Arial&quot;; /* Police de caractères */
+    font-size: 14px; /* Taille de la police */
+    font-weight: bold; /* Police en gras */
+}
+
+QRadioButton::indicator {
+    width: 15px; /* Largeur de l'indicateur */
+    height: 15px; /* Hauteur de l'indicateur */
+}
+
+QRadioButton::indicator:checked {
+    background-color: lightgreen; /* Couleur de fond quand coché */
+    border: 1px solid black; /* Bordure quand coché */
+    border-radius: 7px; /* Rayon des coins quand coché */
+}
+
+QRadioButton::indicator:unchecked {
+    background-color: white; /* Couleur de fond quand décoché */
+    border: 1px solid black; /* Bordure quand décoché */
+    border-radius: 7px; /* Rayon des coins quand décoché */
+}
+
+QRadioButton::indicator:checked:hover {
+    background-color: lightgreen; /* Couleur de fond au survol quand coché */
+}
+
+QRadioButton::indicator:unchecked:hover {
+    background-color: #f0f0f0; /* Couleur de fond au survol quand décoché */
+}
+</string>
+           </property>
+           <property name="text">
+            <string>Privé</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_219">
+           <property name="geometry">
+            <rect>
+             <x>420</x>
+             <y>330</y>
+             <width>131</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(102, 155, 55);
+font-family: 'Athiti';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+background-color: none;</string>
+           </property>
+           <property name="text">
+            <string>Type :</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="radioButton_2">
+           <property name="geometry">
+            <rect>
+             <x>490</x>
+             <y>400</y>
+             <width>83</width>
+             <height>18</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QRadioButton {
+    color: black; /* Couleur du texte */
+    font-family: &quot;Arial&quot;; /* Police de caractères */
+    font-size: 14px; /* Taille de la police */
+    font-weight: bold; /* Police en gras */
+}
+
+QRadioButton::indicator {
+    width: 15px; /* Largeur de l'indicateur */
+    height: 15px; /* Hauteur de l'indicateur */
+}
+
+QRadioButton::indicator:checked {
+    background-color: lightgreen; /* Couleur de fond quand coché */
+    border: 1px solid black; /* Bordure quand coché */
+    border-radius: 7px; /* Rayon des coins quand coché */
+}
+
+QRadioButton::indicator:unchecked {
+    background-color: white; /* Couleur de fond quand décoché */
+    border: 1px solid black; /* Bordure quand décoché */
+    border-radius: 7px; /* Rayon des coins quand décoché */
+}
+
+QRadioButton::indicator:checked:hover {
+    background-color: lightgreen; /* Couleur de fond au survol quand coché */
+}
+
+QRadioButton::indicator:unchecked:hover {
+    background-color: #f0f0f0; /* Couleur de fond au survol quand décoché */
+}
+</string>
+           </property>
+           <property name="text">
+            <string>Public</string>
+           </property>
+          </widget>
+          <widget class="QLabel" name="label_220">
+           <property name="geometry">
+            <rect>
+             <x>420</x>
+             <y>80</y>
+             <width>131</width>
+             <height>21</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: rgb(102, 155, 55);
+font-family: 'Athiti';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+background-color: none;</string>
+           </property>
+           <property name="text">
+            <string>Map :</string>
+           </property>
+          </widget>
+          <widget class="QQuickWidget" name="quickWidget">
+           <property name="geometry">
+            <rect>
+             <x>480</x>
+             <y>110</y>
+             <width>300</width>
+             <height>200</height>
+            </rect>
+           </property>
+           <property name="resizeMode">
+            <enum>QQuickWidget::SizeRootObjectToView</enum>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="confirmer">
+           <property name="geometry">
+            <rect>
+             <x>710</x>
+             <y>310</y>
+             <width>41</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{/* Rectangle 9 */
+
+position: absolute;
+width: 1200px;
+height: 649px;
+
+background: #A9E4A4;
+border: none;
+
+/* Events */
+
+position: absolute;
+width: 63px;
+height: 32px;
+
+font-family: 'Athiti';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 32px;
+/* identical to box height */
+text-align: center;
+
+color: #2A501F;
+border-radius:15px;
+border-bottom:3px solid #669B37;
+}
+
+QPushButton:hover{
+position: absolute;
+width: 185px;
+height: 56px;
+
+background: #8BD086;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/images/images/save.png</normaloff>:/images/images/save.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
+             <height>20</height>
+            </size>
+           </property>
+          </widget>
+          <widget class="QLineEdit" name="adress_a_2">
+           <property name="geometry">
+            <rect>
+             <x>150</x>
+             <y>170</y>
+             <width>231</width>
+             <height>31</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit
+{
+  border-bottom-color: rgb(170, 0, 0);
+border:none;
+background-color: rgba(247, 188, 85, 0);
+border-bottom:3px solid #669B37;
+  border-radius: 10px;
+}</string>
            </property>
           </widget>
          </widget>
@@ -15247,7 +15443,7 @@ box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
           <widget class="QPushButton" name="supprimer_23">
            <property name="geometry">
             <rect>
-             <x>320</x>
+             <x>30</x>
              <y>470</y>
              <width>41</width>
              <height>41</height>
@@ -15486,6 +15682,67 @@ background-color: none;</string>
            </property>
            <property name="text">
             <string>ID :</string>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="assupprimer">
+           <property name="geometry">
+            <rect>
+             <x>310</x>
+             <y>470</y>
+             <width>41</width>
+             <height>41</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{/* Rectangle 9 */
+
+position: absolute;
+width: 1200px;
+height: 649px;
+
+background: #A9E4A4;
+border: none;
+
+/* Events */
+
+position: absolute;
+width: 63px;
+height: 32px;
+
+font-family: 'Athiti';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 32px;
+/* identical to box height */
+text-align: center;
+
+color: #2A501F;
+border-radius:15px;
+border-bottom:3px solid #669B37;
+}
+
+QPushButton:hover{
+position: absolute;
+width: 185px;
+height: 56px;
+
+background: #8BD086;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/images/images/delete.png</normaloff>:/images/images/delete.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
            </property>
           </widget>
          </widget>
@@ -15743,7 +16000,7 @@ background: rgba(0, 0, 0, 0.0);
          <widget class="QWidget" name="widget_25" native="true">
           <property name="geometry">
            <rect>
-            <x>100</x>
+            <x>40</x>
             <y>10</y>
             <width>881</width>
             <height>521</height>
@@ -15792,67 +16049,6 @@ border: 2px solid #669B37;
             <enum>Qt::Horizontal</enum>
            </property>
           </widget>
-          <widget class="QPushButton" name="assupprimer">
-           <property name="geometry">
-            <rect>
-             <x>730</x>
-             <y>380</y>
-             <width>81</width>
-             <height>51</height>
-            </rect>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton{/* Rectangle 9 */
-
-position: absolute;
-width: 1200px;
-height: 649px;
-
-background: #A9E4A4;
-border: none;
-
-/* Events */
-
-position: absolute;
-width: 63px;
-height: 32px;
-
-font-family: 'Athiti';
-font-style: normal;
-font-weight: 700;
-font-size: 20px;
-line-height: 32px;
-/* identical to box height */
-text-align: center;
-
-color: #2A501F;
-border-radius:15px;
-border-bottom:3px solid #669B37;
-}
-
-QPushButton:hover{
-position: absolute;
-width: 185px;
-height: 56px;
-
-background: #8BD086;
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset resource="resources.qrc">
-             <normaloff>:/images/images/delete.png</normaloff>:/images/images/delete.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>30</width>
-             <height>30</height>
-            </size>
-           </property>
-          </widget>
           <widget class="QLabel" name="label_234">
            <property name="geometry">
             <rect>
@@ -15879,7 +16075,7 @@ background-color: none;</string>
             <rect>
              <x>200</x>
              <y>300</y>
-             <width>51</width>
+             <width>101</width>
              <height>22</height>
             </rect>
            </property>
@@ -16027,7 +16223,7 @@ font-size: 18px;
           <widget class="QLabel" name="labelaffbudgetass">
            <property name="geometry">
             <rect>
-             <x>270</x>
+             <x>180</x>
              <y>300</y>
              <width>161</width>
              <height>16</height>
@@ -16048,6 +16244,110 @@ font-size: 18px;
            </property>
            <property name="text">
             <string/>
+           </property>
+          </widget>
+          <widget class="QPushButton" name="asPDF">
+           <property name="geometry">
+            <rect>
+             <x>660</x>
+             <y>350</y>
+             <width>61</width>
+             <height>61</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{/* Rectangle 9 */
+
+position: absolute;
+width: 1200px;
+height: 649px;
+
+background: #A9E4A4;
+border: none;
+
+/* Events */
+
+position: absolute;
+width: 63px;
+height: 32px;
+
+font-family: 'Athiti';
+font-style: normal;
+font-weight: 700;
+font-size: 20px;
+line-height: 32px;
+/* identical to box height */
+text-align: center;
+
+color: #2A501F;
+border-radius:15px;
+border-bottom:3px solid #669B37;
+}
+
+QPushButton:hover{
+position: absolute;
+width: 185px;
+height: 56px;
+
+background: #8BD086;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="resources.qrc">
+             <normaloff>:/images/images/pdf.png</normaloff>:/images/images/pdf.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+          </widget>
+          <widget class="QComboBox" name="comboBox_10">
+           <property name="geometry">
+            <rect>
+             <x>340</x>
+             <y>300</y>
+             <width>62</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <item>
+            <property name="text">
+             <string>EUR</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>TND</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>USD</string>
+            </property>
+           </item>
+          </widget>
+          <widget class="QLineEdit" name="lineEdit_9">
+           <property name="geometry">
+            <rect>
+             <x>80</x>
+             <y>340</y>
+             <width>113</width>
+             <height>20</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"> border-bottom-color: rgb(170, 0, 0);
+border:none;
+background-color: rgba(247, 188, 85, 0);
+border-bottom:3px solid #669B37;
+  border-radius: 10px;
+</string>
            </property>
           </widget>
          </widget>
@@ -16079,7 +16379,7 @@ background: rgba(0, 0, 0, 0.0);
 </string>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="page_13">
          <property name="styleSheet">
@@ -19514,6 +19814,13 @@ transform: matrix(1, 0, 0, 1, 0, 0);
    </widget>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QQuickWidget</class>
+   <extends>QWidget</extends>
+   <header location="global">QtQuickWidgets/QQuickWidget</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>

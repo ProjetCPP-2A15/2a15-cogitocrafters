@@ -34,4 +34,11 @@
         <file>images/cal.png</file>
         <file>images/backlogin.jpg</file>
     </qresource>
+    <qresource prefix="/">
+        <file>map.qml</file>
+        <file>RouteListHeader.qml</file>
+        <file>RouteList.qml</file>
+        <file>RouteListDelegate.qml</file>
+        <file>helper.js</file>
+    </qresource>
 </RCC>

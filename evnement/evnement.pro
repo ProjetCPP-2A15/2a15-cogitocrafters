@@ -1,6 +1,27 @@
-QT       += core gui
+QT       += core gui positioning quick widgets qml
 QT       += sql
+QT += network
 
+
+
+#PDF
+QT += widgets printsupport
+
+LIBS += -L"C:/Qt/Qt5.9.9/Tools/mingw530_32/opt/bin" -lssleay32 -llibeay32
+
+QT += location positioning quickcontrols2
+TEMPLATE = app
+
+QT += qml network quick positioning location
+CONFIG += qtquickcompiler
+QT += quickcontrols2
+QT += quickwidgets
+
+CONFIG += qxt
+# Workaround for QTBUG-38735
+QT_FOR_CONFIG += location-private
+qtConfig(geoservices_mapboxgl): QT += sql opengl
+qtConfig(geoservices_osm): QT += concurrent
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG += c++11
 

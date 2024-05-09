@@ -13,10 +13,11 @@ private :
     QString nom;
     QString adresse;
     QString description;
+    QString type;
 public:
     //cons
     Association(){}
-    Association(int,QString,QString,QString);
+    Association(int,QString,QString,QString,QString);
 
     //get
    // int getId(){return id;}
@@ -24,6 +25,7 @@ public:
     QString getNom(){return nom;}
     QString getAdresse(){return adresse;}
     QString getDescription(){return description;}
+    QString gettype(){return type;}
 
     //setters
   //  void setId(int id){this->id=id;}
@@ -31,6 +33,7 @@ public:
     void setNom(QString nom){this->nom=nom;}
     void setAdresse(QString adresse){this->adresse=adresse;}
     void setDescription(QString description){this->description=description;}
+    void settype(QString type){this->type=type;}
 
     //fonction
     bool ajouter();

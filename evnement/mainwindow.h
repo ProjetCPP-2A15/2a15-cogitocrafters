@@ -4,6 +4,10 @@
 #include <QMainWindow>
 #include <QPushButton>
 #include <QWidget>
+#include <QVariant>
+#include <QtCore>
+#include <QtGui>
+#include <QtQuick>
 #include "association.h"
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -13,6 +17,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -20,6 +25,7 @@ public:
     void deselectButton(QPushButton *button);
 
 private slots:
+
     void on_pushButtonEvents_clicked();
 
     void on_pushButtonProduct_clicked();
@@ -78,6 +84,7 @@ private slots:
     void on_listtoaddass_clicked();
 
     void on_listtoaddpro_clicked();
+    void updateInfoText(QString info);
 
     void on_supprimer_38_clicked();
 
@@ -124,8 +131,28 @@ private slots:
 
     void on_tableView_22_doubleClicked(const QModelIndex &index);
 
+    void on_assupprimer_clicked();
+
+    //void on_supprimer_31_clicked();
+
+    void on_asPDF_clicked();
+
+    void on_comboBox_10_currentIndexChanged(int index);
+    void getCityName(double latitude, double longitude);
+
+    void on_confirmer_clicked();
+
 private:
     Ui::MainWindow *ui;
     Association a;
+
+
+signals:
+    void setCenter(QVariant latitude, QVariant longitude);
+     void setCenter(double latitude, double longitude); // Une au
+     void addMarker(QVariant lat, QVariant lng);
+     void infoTextChanged(QString info);
+
+
 };
 #endif // MAINWINDOW_H

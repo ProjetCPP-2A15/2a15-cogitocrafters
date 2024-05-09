@@ -1,0 +1,99 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/add-removebg-preview.png</file>
+        <file>images/artist.png</file>
+        <file>images/association.png</file>
+        <file>images/attendancebg.png</file>
+        <file>images/back.png</file>
+        <file>images/backlogin.jpg</file>
+        <file>images/cal.png</file>
+        <file>images/clear.png</file>
+        <file>images/del-removebg-preview.png</file>
+        <file>images/delete.png</file>
+        <file>images/down-arrow.png</file>
+        <file>images/down.png</file>
+        <file>images/empcardbg.png</file>
+        <file>images/employees.png</file>
+        <file>images/events.png</file>
+        <file>images/eye.png</file>
+        <file>images/Guest1.jpg</file>
+        <file>images/guests.png</file>
+        <file>images/list.png</file>
+        <file>images/logo app.png</file>
+        <file>images/logo evee.png</file>
+        <file>images/logout_1828479.png</file>
+        <file>images/man_4128176.png</file>
+        <file>images/map.png</file>
+        <file>images/modifier.png</file>
+        <file>images/pdf.png</file>
+        <file>images/pie-chart.png</file>
+        <file>images/products.png</file>
+        <file>images/recherche.png</file>
+        <file>images/save.png</file>
+        <file>images/search (2).png</file>
+        <file>images/search.png</file>
+        <file>images/searchhover.png</file>
+        <file>images/setting.png</file>
+        <file>images/stat.png</file>
+        <file>images/up-removebg-preview.png</file>
+        <file>images/up.png</file>
+        <file>images/vase.jpg</file>
+        <file>images/ajout.png</file>
+        <file>images/arrow-left_9923711.png</file>
+        <file>images/arrow-right_9923713.png</file>
+        <file>images/broken clouds.png</file>
+        <file>images/calendar_55281.png</file>
+        <file>images/clear sky.png</file>
+        <file>images/few clouds.png</file>
+        <file>images/instagram.png</file>
+        <file>images/light rain.png</file>
+        <file>images/location.png</file>
+        <file>images/mist.png</file>
+        <file>images/overcast clouds.png</file>
+        <file>images/photo_3921011.png</file>
+        <file>images/price.png</file>
+        <file>images/rain.png</file>
+        <file>images/scattered clouds.png</file>
+        <file>images/shower rain.png</file>
+        <file>images/snow.png</file>
+        <file>images/thunderstorm.png</file>
+        <file>images/twitter.png</file>
+        <file>images/weather.png</file>
+        <file>images/whatsapp.png</file>
+        <file>images/403695854_271742762121578_3287900018461278270_n.png</file>
+        <file>images/435354661_972895424229956_3832084104796274403_n.png</file>
+        <file>images/435375670_1386469895363522_1800104436930293289_n.png</file>
+        <file>images/435410936_394021370268142_2615759970355064496_n.png</file>
+        <file>images/435450186_414239101323160_8639566545387025613_n.png</file>
+        <file>images/435545484_3752682341669918_8228237459603020853_n.png</file>
+        <file>images/436622675_390506343899780_2924107014229009739_n.png</file>
+        <file>images/436689411_1403846616911797_3881225420516799202_n.png</file>
+        <file>images/436703291_1132148014648115_4066291675466680709_n.png</file>
+        <file>images/436749231_811740754174729_3293219468789068782_n.png</file>
+        <file>images/article1.png</file>
+        <file>images/article2.png</file>
+        <file>images/article3.png</file>
+        <file>images/article4.png</file>
+        <file>images/article5.png</file>
+        <file>images/article6.png</file>
+        <file>images/article7.png</file>
+        <file>images/languedes.png</file>
+        <file>images/vedio.png</file>
+        <file>images/vocale.png</file>
+        <file>images/evaluation.png</file>
+        <file>images/384565685_313472068144016_8276174496482612190_n.png</file>
+        <file>images/image-gallery_3342137.png</file>
+        <file>images/video_1179120.png</file>
+        <file>images/chatbot_2068868.png</file>
+        <file>images/sound_487180.png</file>
+        <file>images/mudra_7184567.png</file>
+        <file>images/cctv_800209.png</file>
+        <file>images/microphone_2713806.png</file>
+        <file>images/wireless_15229389.png</file>
+        <file>images/add_12484424.png</file>
+        <file>images/minus-circle_10469167.png</file>
+        <file>images/acces.png</file>
+        <file>images/logog.gif</file>
+        <file>images/backg.png</file>
+    </qresource>
+</RCC>

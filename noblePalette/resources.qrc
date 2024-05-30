@@ -1,0 +1,65 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/artist.png</file>
+        <file>images/association.png</file>
+        <file>images/events.png</file>
+        <file>images/guests.png</file>
+        <file>images/logo app.png</file>
+        <file>images/products.png</file>
+        <file>images/setting.png</file>
+        <file>images/absentbg.png</file>
+        <file>images/attendancebg.png</file>
+        <file>images/empcardbg.png</file>
+        <file>images/back.png</file>
+        <file>images/searchhover.png</file>
+        <file>images/Guest1.jpg</file>
+        <file>images/add-removebg-preview.png</file>
+        <file>images/del-removebg-preview.png</file>
+        <file>images/up-removebg-preview.png</file>
+        <file>images/recherche.png</file>
+        <file>images/search (2).png</file>
+        <file>images/delete.png</file>
+        <file>images/logo evee.png</file>
+        <file>images/map.png</file>
+        <file>images/modifier.png</file>
+        <file>images/pdf.png</file>
+        <file>images/save.png</file>
+        <file>images/stat.png</file>
+        <file>images/ajout.png</file>
+        <file>images/clear.png</file>
+        <file>images/list.png</file>
+        <file>images/man_4128176.png</file>
+        <file>images/down-arrow.png</file>
+        <file>images/vase.jpg</file>
+        <file>images/cal.png</file>
+        <file>images/backlogin.jpg</file>
+        <file>images/backg.png</file>
+        <file>images/bbkg.jpg</file>
+        <file>images/ggg.jpg</file>
+        <file>images/gh.jpg</file>
+        <file>images/gh-transformed.jpeg</file>
+        <file>images/distance_5952582.png</file>
+        <file>images/off_5681896.png</file>
+        <file>images/arrow_52970.png</file>
+        <file>images/volume-up_12091578.png</file>
+        <file>images/silent_4155572.png</file>
+        <file>images/surface-pro-9-stock-green-abstract-green-background-3840x2400-9062.png</file>
+        <file>images/vecteezy_abstract-green-environment-background-smooth-minimal-ai_29284356.jpg</file>
+        <file>images/ha.png</file>
+        <file>images/s.png</file>
+        <file>images/sa.png</file>
+        <file>images/an.png</file>
+        <file>images/n.png</file>
+        <file>images/sc.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>map.qml</file>
+        <file>RouteListHeader.qml</file>
+        <file>RouteList.qml</file>
+        <file>RouteListDelegate.qml</file>
+        <file>helper.js</file>
+        <file>images/1500906961642574934-128.png</file>
+        <file>../../../Downloads/score_8910022.png</file>
+        <file>images/bbkg.jpg</file>
+    </qresource>
+</RCC>
